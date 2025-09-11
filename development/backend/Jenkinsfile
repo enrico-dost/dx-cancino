@@ -1,0 +1,127 @@
+pipeline {
+    agent any
+    
+    environment {
+        DOCKER_HUB_REPO = 'your-dockerhub-username/my-app'  // CHANGE THIS!
+        DOCKER_HUB_CREDS = credentials('dockerhub-credentials')
+        APP_VERSION = "${BUILD_NUMBER}"
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checking out code...'
+                checkout scm
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                script {
+                    echo 'Building application...'
+                    sh '''
+                        # For Java/Maven projects
+                        mvn clean compile
+                    '''
+                }
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                script {
+                    echo 'Running tests...'
+                    sh '''
+                        mvn test
+                    '''
+                }
+            }
+            post {
+                always {
+                    // Archive test results
+                    publishTestResults testResultsPattern: 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+        
+        stage('Package') {
+            steps {
+                script {
+                    echo 'Packaging application...'
+                    sh '''
+                        mvn package -DskipTests
+                        
+                        # Archive artifacts in Jenkins
+                        mkdir -p artifacts
+                        cp target/*.jar artifacts/ 2>/dev/null || echo "No JAR files found"
+                    '''
+                }
+            }
+            post {
+                always {
+                    // Archive artifacts in Jenkins (replaces Nexus)
+                    archiveArtifacts artifacts: 'target/*.jar', fingerprint: true, allowEmptyArchive: true
+                }
+            }
+        }
+        
+        stage('Docker Build') {
+            steps {
+                script {
+                    echo 'Building Docker image...'
+                    sh """
+                        docker build -t ${DOCKER_HUB_REPO}:${APP_VERSION} .
+                        docker build -t ${DOCKER_HUB_REPO}:latest .
+                    """
+                }
+            }
+        }
+        
+        stage('Docker Push') {
+            steps {
+                script {
+                    echo 'Pushing to Docker Hub...'
+                    sh """
+                        echo \$DOCKER_HUB_CREDS_PSW | docker login -u \$DOCKER_HUB_CREDS_USR --password-stdin
+                        docker push ${DOCKER_HUB_REPO}:${APP_VERSION}
+                        docker push ${DOCKER_HUB_REPO}:latest
+                        docker logout
+                    """
+                }
+            }
+        }
+        
+        stage('Deploy to Development') {
+            steps {
+                script {
+                    echo 'Deploying to development environment...'
+                    sh """
+                        # Deploy to Kubernetes
+                        kubectl set image deployment/my-app my-app=${DOCKER_HUB_REPO}:${APP_VERSION} -n development || echo "Deployment not found, creating..."
+                        
+                        # Create deployment if it doesn't exist
+                        kubectl create deployment my-app --image=${DOCKER_HUB_REPO}:${APP_VERSION} -n development || echo "Deployment already exists"
+                        
+                        # Expose service
+                        kubectl expose deployment my-app --port=8080 --target-port=8080 -n development || echo "Service already exists"
+                    """
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            // Cleanup
+            sh 'docker image prune -f || echo "No images to prune"'
+        }
+        success {
+            echo '✅ Pipeline completed successfully!'
+            // You can add notifications here (email, Slack, etc.)
+        }
+        failure {
+            echo '❌ Pipeline failed!'
+            // You can add failure notifications here
+        }
+    }
+}
