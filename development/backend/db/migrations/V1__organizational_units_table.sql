@@ -1,29 +1,38 @@
 -- db/migrations/V1__organizational_units_table.sql
 
 CREATE TABLE tblorganizational_units (
-    org_unit_id INT PRIMARY KEY AUTO_INCREMENT,
+    org_unit_id SERIAL PRIMARY KEY,
     org_unit_name VARCHAR(255) UNIQUE NOT NULL,
     org_unit_descr VARCHAR(255) NULL,
     unit_type_id INT NOT NULL,
     parent_org_unit_id INT NULL,
-    region_id INT NOT NULL,
-    prov_id INT NOT NULL,
-    city_id INT NOT NULL,
-    barangay_id INT NOT NULL,
+    region_id INT NULL,
+    prov_id INT NULL,
+    city_id INT NULL,
+    barangay_id INT NULL,
     address VARCHAR(255) NULL,
     latitude DECIMAL(9,11) NULL,
     longitude DECIMAL(9,11) NULL,
-    created_by INT NULL COMMENT 'Foreign key to Users table for the user who created this record',
-    updated_by INT NULL COMMENT 'Foreign key to Users table for the user who last updated this record',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (unit_type_id) REFERENCES Unit_Types(unit_type_id),
-    FOREIGN KEY (parent_org_unit_id) REFERENCES Organizational_Units(org_unit_id),
-    FOREIGN KEY (region_id) REFERENCES tblregion(region_id),
-    FOREIGN KEY (prov_id) REFERENCES tblprovincial(prov_id),
-    FOREIGN KEY (city_id) REFERENCES tblcity(city_id),
-    FOREIGN KEY (brgy_id) REFERENCES tblbarangay(brgy_id)
+    created_by INT NULL,
+    updated_by INT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    FOREIGN KEY (unit_type_id) REFERENCES tblunit_types(unit_type_id),
+    FOREIGN KEY (parent_org_unit_id) REFERENCES tblorganizational_units(org_unit_id)
 );
+
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER update_tblorganizational_units_updated_at
+BEFORE UPDATE ON tblorganizational_units
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
 
 INSERT INTO tblorganizational_units (org_unit_id, org_unit_name, org_unit_descr, unit_type_id, parent_org_unit_id, region_id, prov_id, city_id, brgy_id) VALUES
 -- Parent: Sectoral Planning Councils (org_unit_id = 101)
