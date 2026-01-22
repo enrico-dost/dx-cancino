@@ -34,5 +34,4 @@ INSERT INTO tblunit_types (unit_type_name, unit_type_descr) VALUES
 ( 'Branch', 'A localized sub-unit of an office.'),
 ( 'Field Office', 'A unit operating directly in a specific field or area.'),
 ( 'Office', 'A high-level administrative unit or leadership office.'),
-( 'Service', 'A functional division providing support and specialized services.'),
-( 'Regional Office', 'An office that manages S&T programs for a specific region.');
+( 'Service', 'A functional division providing support and specialized services.');
