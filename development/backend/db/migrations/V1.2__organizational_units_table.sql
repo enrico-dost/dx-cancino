@@ -34,7 +34,7 @@ BEFORE UPDATE ON tblorganizational_units
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
-INSERT INTO tblorganizational_units (org_unit_id, org_unit_name, org_unit_descr, unit_type_id, parent_org_unit_id, region_id, prov_id, city_id, brgy_id) VALUES
+INSERT INTO tblorganizational_units (org_unit_id, org_unit_name, org_unit_descr, unit_type_id, parent_org_unit_id, region_id, prov_id, city_id, barangay_id) VALUES
 -- Parent: Sectoral Planning Councils (org_unit_id = 101)
 (101, 'Sectoral Planning Councils', 'A coordinating body for various sectoral research councils under DOST.', 1, NULL, 1, 1, 16, 1),
 (102, 'PCAARRD', 'Philippine Council for Agriculture, Aquatic and Natural Resources Research and Development.', 1, 101, 6, 26, 95, 1),
