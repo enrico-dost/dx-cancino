@@ -1,6 +1,6 @@
 //this is a sample index file
 //this file contains the configuration of your backend code
-//this is where the initiliazation and testing of databse connection takes place
+//this is where the initiliazation and testing of database connection takes place
 //this starts the server using DI
 
 
@@ -19,6 +19,10 @@ import { AgencyController } from './presentation/controllers/agency/AgencyContro
 // Auth imports
 import { AuthController } from './presentation/controllers/auth/AuthController';
 import { createAuthRoutes } from './presentation/routes/auth/authRoutes';
+
+// Organizational Unit imports
+import { OrganizationalUnitController } from './presentation/controllers/update-organizational-unit/organizationalUnitController';
+import { createOrganizationalUnitRoutes } from './presentation/routes/update-organizational-unit/organizationalUnitRoutes';
 
 // Load environment variables
 dotenv.config();
@@ -80,12 +84,14 @@ const initializeRoutes = async () => {
     // Get controller from DI container
     const agencyController = container.get<AgencyController>(TYPES.AgencyController);
     const authController = container.get<AuthController>(TYPES.AuthController);
+    const organizationalUnitController = container.get<OrganizationalUnitController>(TYPES.OrganizationalUnitController);
     
     // Auth Routes (before other routes)
     app.use('/api/auth', createAuthRoutes(authController));
     
     // Routes
     app.use('/api/agencies', createAgencyRoutes(agencyController));
+    app.use('/api/organizational-units', createOrganizationalUnitRoutes(organizationalUnitController));
     
     routesInitialized = true;
     console.log('Routes initialized successfully');

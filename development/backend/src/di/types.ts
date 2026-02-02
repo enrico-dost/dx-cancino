@@ -7,4 +7,9 @@ export const TYPES = {
   
   // Auth Controllers
   AuthController: Symbol.for('AuthController'),
+  
+  // Organizational Unit
+  OrganizationalUnitRepository: Symbol.for('OrganizationalUnitRepository'),
+  UpdateOrganizationalUnitUseCase: Symbol.for('UpdateOrganizationalUnitUseCase'),
+  OrganizationalUnitController: Symbol.for('OrganizationalUnitController'),
 };
