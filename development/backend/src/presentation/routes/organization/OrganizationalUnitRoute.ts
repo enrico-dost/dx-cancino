@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import type { OrganizationalUnitController } from '../../controllers/organization/OrganizationalUnitController';
-import { authenticateJWT } from '../../middleware/authMiddleware';
+import { authenticateJWT } from '../../../utils/authMiddleware.js';
 
 export function createOrganizationalUnitRoutes(controller: OrganizationalUnitController): Router {
   const router = Router();

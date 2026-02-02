@@ -10,11 +10,27 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { container } from './di/container';
 import { TYPES } from './di/types';
+
+// Database
 import { DatabaseService } from './data/data-sources/DatabaseService';
+
+// Agency API
+import { AgencyController } from './presentation/controllers/agency/AgencyController';
+import { createAgencyRoutes } from './presentation/routes/agency/agencyRoutes';
+
+// Organization API
 import { OrganizationalUnitController } from './presentation/controllers/organization/OrganizationalUnitController';
 import { createOrganizationalUnitRoutes } from './presentation/routes/organization/OrganizationalUnitRoute';
+
+// Auth
+import { AuthController } from './presentation/controllers/auth/AuthController';
+import { createAuthRoutes } from './presentation/routes/auth/authRoutes';
+
+// Response Models
 import { createSuccessResponse, createErrorResponse } from './presentation/models/dto/GlobalResponseDto';
-import './config/jwt.config.js'; // Load JWT configuration and display token
+
+// JWT Configuration
+import './config/jwt.config'; // Load JWT configuration and display token
 
 // Load environment variables
 dotenv.config();
@@ -63,7 +79,8 @@ app.get('/', (req, res) => {
     {
       service: 'DX Organization Management Backend',
       version: '1.0.0',
-      status: 'operational'
+      status: 'operational',
+      apis: ['Agency API', 'Organization API']
     }
   );
   res.json(response);
@@ -98,6 +115,7 @@ let routesInitialized = false;
 
 /**
  * Initialize routes function
+ * Registers all API routes in a scalable manner
  */
 const initializeRoutes = async () => {
   if (routesInitialized) {
@@ -127,22 +145,39 @@ const initializeDatabase = async (): Promise<void> => {
 
 /**
  * Register application routes
+ * Modular route registration for scalability
  */
 const registerRoutes = (): void => {
-  // Main API route
+  // Main API route - Lists all available endpoints
   app.get('/api', (req, res) => {
     const response = createSuccessResponse(
       {
         version: '1.0.0',
-        endpoints: [
-          '/api/organizational-units'
-        ]
+        endpoints: {
+          auth: '/api/auth',
+          agencies: '/api/agencies',
+          organizationalUnits: '/api/organizational-units'
+        }
       }
     );
     res.json(response);
   });
 
-  // Organizational Unit Routes
+  // ============================================
+  // Auth Routes - Must be registered first
+  // ============================================
+  const authController = container.get<AuthController>(TYPES.AuthController);
+  app.use('/api/auth', createAuthRoutes(authController));
+
+  // ============================================
+  // Agency API Routes
+  // ============================================
+  const agencyController = container.get<AgencyController>(TYPES.AgencyController);
+  app.use('/api/agencies', createAgencyRoutes(agencyController));
+
+  // ============================================
+  // Organization API Routes
+  // ============================================
   const organizationalUnitController = container.get<OrganizationalUnitController>(TYPES.OrganizationalUnitController);
   app.use('/api', createOrganizationalUnitRoutes(organizationalUnitController));
 };
@@ -165,8 +200,10 @@ if (process.env.NODE_ENV !== 'test') {
         console.log(`🚀 Server is running on port ${PORT}`);
         console.log(`📍 Access it at: http://${HOST}:${PORT}`);
         console.log(`🔐 JWT Secret loaded: ${process.env.JWT_SECRET ? 'Yes' : 'No (using default)'}`);
-        console.log(`📋 Available endpoints:`);
-        console.log(`   - GET  /api/organizational-units`);
+        console.log(`📋 Available APIs:`);
+        console.log(`   - Auth:         /api/auth`);
+        console.log(`   - Agencies:     /api/agencies`);
+        console.log(`   - Org Units:    /api/organizational-units`);
       });
     } catch (error) {
       console.error('Failed to start server:', error);

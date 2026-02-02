@@ -1,14 +1,22 @@
 import type { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
+// Extended JWT payload interface to support multiple auth types
 export interface JwtPayload {
-  userId: number;
+  userId: string | number;
   email?: string;
+  role?: string;
+  type?: string;
+  generatedAt?: string;
 }
 
+// Extended Request interface with user context
 export interface AuthenticatedRequest extends Request {
   user?: JwtPayload;
 }
+
+// Type alias for backward compatibility
+export interface AuthRequest extends AuthenticatedRequest {}
 
 export const authenticateJWT = (
   req: AuthenticatedRequest,
@@ -23,6 +31,7 @@ export const authenticateJWT = (
       res.status(401).json({
         status: 401,
         message: 'Authorization header missing',
+        data: {}
       });
       return;
     }
@@ -32,6 +41,7 @@ export const authenticateJWT = (
       res.status(401).json({
         status: 401,
         message: 'Invalid authorization format. Expected: Bearer <token>',
+        data: {}
       });
       return;
     }
@@ -43,6 +53,7 @@ export const authenticateJWT = (
       res.status(401).json({
         status: 401,
         message: 'Token missing',
+        data: {}
       });
       return;
     }
@@ -55,23 +66,21 @@ export const authenticateJWT = (
       res.status(500).json({
         status: 500,
         message: 'Internal server configuration error',
+        data: {}
       });
       return;
     }
 
     // Verify and decode the token
     const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
-
-    // Attach user data to request object
     req.user = decoded;
-
-    // Proceed to next middleware/controller
     next();
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {
       res.status(401).json({
         status: 401,
         message: 'Token expired',
+        data: {}
       });
       return;
     }
@@ -80,14 +89,16 @@ export const authenticateJWT = (
       res.status(401).json({
         status: 401,
         message: 'Invalid token',
+        data: {}
       });
       return;
     }
 
     console.error('Error in authenticateJWT middleware:', error);
-    res.status(500).json({
-      status: 500,
-      message: 'Internal server error',
+    res.status(401).json({
+      status: 401,
+      message: 'unauthorized',
+      data: {}
     });
   }
 };

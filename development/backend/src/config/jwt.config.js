@@ -1,28 +1,15 @@
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import dotenv from 'dotenv';
-
 dotenv.config();
-
-// SECURITY: Always use environment variable for JWT_SECRET
-export const JWT_SECRET = process.env.JWT_SECRET || (() => {
-  console.error('❌ CRITICAL: JWT_SECRET not set in .env file!');
-  console.error('⚠️  Using insecure fallback - DO NOT USE IN PRODUCTION!');
-  return 'INSECURE_FALLBACK_SECRET';
-})();
-
-export const JWT_CONFIG = {
-  expiresIn: '365d' as string | number, // 1 year expiration for long-term access
-  algorithm: 'HS256' as jwt.Algorithm,
-};
 
 /**
  * Generate Dynamic JWT Token
- * @param userId - User ID
- * @param role - User role (admin, user, etc.)
- * @returns JWT Token
+ * @param {string} userId - User ID
+ * @param {string} role - User role (admin, user, etc.)
+ * @returns {string} JWT Token
  */
-export const generateDynamicToken = (userId: string = 'system', role: string = 'admin'): string => {
+export const generateDynamicToken = (userId = 'system', role = 'admin') => {
   const payload = {
     userId,
     role,
@@ -30,22 +17,22 @@ export const generateDynamicToken = (userId: string = 'system', role: string = '
     generatedAt: new Date().toISOString()
   };
 
-  const options: jwt.SignOptions = {
-    expiresIn: '365d',
+  const options = {
+    expiresIn: '365d', // 1 year expiration
     issuer: 'dost-dx-backend',
     audience: 'dost-dx-client'
   };
 
-  return jwt.sign(payload, JWT_SECRET, options);
+  return jwt.sign(payload, process.env.JWT_SECRET, options);
 };
 
 /**
  * Verify JWT Token
- * @param token - JWT Token
- * @returns Decoded payload
+ * @param {string} token - JWT Token
+ * @returns {object} Decoded payload
  */
-export const verifyToken = (token: string): any => {
-  return jwt.verify(token, JWT_SECRET);
+export const verifyToken = (token) => {
+  return jwt.verify(token, process.env.JWT_SECRET);
 };
 
 // AUTO-GENERATE ON STARTUP
@@ -64,7 +51,7 @@ console.log('Authorization: Bearer', autoToken);
 const tokenData = {
   token: autoToken,
   generatedAt: new Date().toISOString(),
-  expiresIn: JWT_CONFIG.expiresIn,
+  expiresIn: '365d',
   userId: 'system',
   role: 'admin'
 };
