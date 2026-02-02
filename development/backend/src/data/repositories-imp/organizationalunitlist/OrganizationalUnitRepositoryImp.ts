@@ -2,20 +2,9 @@ import { injectable, inject } from 'inversify';
 import type { Pool } from 'pg';
 import type { OrganizationalUnitRepository } from '../../../domain/repositories/organizationalunitlist/OrganizationalUnitRepository';
 import type { OrganizationalUnitEntity } from '../../../domain/entities/organizationalunitlist/OrganizationalUnitEntity';
+import type { OrganizationalUnitModel } from '../../models/organizationalunitlist/OrganizationalUnitModel';
+import { OrganizationalUnitMapper } from '../../mappers/organizationalunitlist/OrganizationalUnitMapper';
 import { TYPES } from '../../../di/types';
-
-// Internal database row structure
-interface OrganizationalUnitRow {
-  org_unit_id: number;
-  org_unit_name: string;
-  address: string | null;
-  brgy_id: number | null;
-  city_id: number | null;
-  prov_id: number | null;
-  region_id: number | null;
-  unit_type: string;
-  parent_unit_name: string | null;
-}
 
 // Geo service response interfaces
 interface GeoDataResponse {
@@ -54,40 +43,30 @@ export class OrganizationalUnitRepositoryImp implements OrganizationalUnitReposi
         ORDER BY ou.org_unit_id;
       `;
 
-      const result = await this.pool.query<OrganizationalUnitRow>(query);
+      const result = await this.pool.query<OrganizationalUnitModel>(query);
 
-      // If no data found, return empty array
       if (result.rows.length === 0) {
         return [];
       }
 
-      // Step 2: Enrich each organizational unit with location data
-      const enrichedUnits = await Promise.all(
+      const addressMap = new Map<number, string>();
+      await Promise.all(
         result.rows.map(async (row) => {
           const completeAddress = await this.buildCompleteAddress(row);
-          
-          return {
-            org_unit_id: row.org_unit_id,
-            org_unit_name: row.org_unit_name,
-            parent_unit_name: row.parent_unit_name,
-            unit_type: row.unit_type,
-            complete_address: completeAddress,
-          };
+          addressMap.set(row.org_unit_id, completeAddress);
         })
       );
 
-      return enrichedUnits;
+      const entities = OrganizationalUnitMapper.toEntities(result.rows, addressMap);
+
+      return entities;
     } catch (error) {
       console.error('Error fetching organizational units:', error);
       throw new Error('Failed to fetch organizational units data');
     }
   }
 
-  /**
-   * Builds the complete address by calling the Geo Data Service
-   * Format: "Region name, Provincial Name, City name, barangay name, address/street"
-   */
-  private async buildCompleteAddress(row: OrganizationalUnitRow): Promise<string> {
+  private async buildCompleteAddress(row: OrganizationalUnitModel): Promise<string> {
     try {
       const addressParts: string[] = [];
 
@@ -114,9 +93,6 @@ export class OrganizationalUnitRepositoryImp implements OrganizationalUnitReposi
     }
   }
 
-  /**
-   * Fetches geo data from the external Geo Data Service
-   */
   private async fetchGeoData(type: 'region' | 'province' | 'city' | 'barangay', id: number): Promise<GeoDataResponse | null> {
     try {
       const url = `${this.GEO_SERVICE_BASE_URL}/${type}/${id}`;
@@ -125,8 +101,7 @@ export class OrganizationalUnitRepositoryImp implements OrganizationalUnitReposi
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          // Add authorization if needed by your geo service
-          // 'Authorization': `Bearer ${process.env.GEO_SERVICE_TOKEN}`,
+
         },
       });
 
