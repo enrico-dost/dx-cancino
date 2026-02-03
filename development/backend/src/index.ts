@@ -19,8 +19,8 @@ import { AgencyController } from './presentation/controllers/agency/AgencyContro
 import { createAgencyRoutes } from './presentation/routes/agency/agencyRoutes';
 
 // Organization API
-import { OrganizationalUnitController } from './presentation/controllers/organization/OrganizationalUnitController';
-import { createOrganizationalUnitRoutes } from './presentation/routes/organization/OrganizationalUnitRoute';
+import { OrganizationalUnitController } from './presentation/controllers/organizational-unit-list/organizationalunitController';
+import { createOrganizationalUnitRoutes } from './presentation/routes/organization-unit-list/organizationalunitRoutes';
 
 // Auth
 import { AuthController } from './presentation/controllers/auth/AuthController';
@@ -202,7 +202,7 @@ if (process.env.NODE_ENV !== 'test') {
         console.log(`🔐 JWT Secret loaded: ${process.env.JWT_SECRET ? 'Yes' : 'No (using default)'}`);
         console.log(`📋 Available APIs:`);
         console.log(`   - Auth:         /api/auth`);
-        console.log(`   - Agencies:     /api/agencies`);
+        console.log(`   - Agencies:     /api/agencies/by-sector/list`);
         console.log(`   - Org Units:    /api/organizational-units`);
       });
     } catch (error) {

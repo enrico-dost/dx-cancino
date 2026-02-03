@@ -1,9 +1,9 @@
 import { injectable, inject } from 'inversify';
 import type { Pool } from 'pg';
-import type { OrganizationalUnitRepository } from '../../../domain/repositories/organizationalunitlist/OrganizationalUnitRepository';
-import type { OrganizationalUnitEntity } from '../../../domain/entities/organizationalunitlist/OrganizationalUnitEntity';
-import type { OrganizationalUnitModel } from '../../models/organizationalunitlist/OrganizationalUnitModel';
-import { OrganizationalUnitMapper } from '../../mappers/organizationalunitlist/OrganizationalUnitMapper';
+import type { OrganizationalUnitRepository } from '../../../domain/repositories/organizational-unit-list/organizationalUnitRepository';
+import type { OrganizationalUnitEntity } from '../../../domain/entities/organizational-unit-list/organizationalUnitEntity';
+import type { OrganizationalUnitModel } from '../../models/organizational-unit-list/organizationalUnitModel';
+import { OrganizationalUnitMapper } from '../../mappers/organizational-unit-list/organizationalUnitMapper';
 import { TYPES } from '../../../di/types';
 
 // Geo service response interfaces

@@ -1,5 +1,5 @@
-import type { OrganizationalUnitModel } from '../../models/organizationalunitlist/OrganizationalUnitModel';
-import type { OrganizationalUnitEntity } from '../../../domain/entities/organizationalunitlist/OrganizationalUnitEntity';
+import type { OrganizationalUnitModel } from '../../models/organizational-unit-list/organizationalUnitModel';
+import type { OrganizationalUnitEntity } from '../../../domain/entities/organizational-unit-list/organizationalUnitEntity';
 
 export class OrganizationalUnitMapper {
   /**

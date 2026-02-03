@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import type { OrganizationalUnitController } from '../../controllers/organization/OrganizationalUnitController';
+import type { OrganizationalUnitController } from '../../controllers/organizational-unit-list/organizationalunitController';
 import { authenticateJWT } from '../../../utils/authMiddleware.js';
 
 export function createOrganizationalUnitRoutes(controller: OrganizationalUnitController): Router {

@@ -6,6 +6,26 @@ This API endpoint provides a comprehensive list of all organizational units with
 ## Endpoint
 **GET** `/api/organizational-units`
 
+### Static Token for Testing
+For quick testing, use this pre-generated token (valid for 1 year):
+
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJzeXN0ZW0iLCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYXBpLWFjY2VzcyIsImdlbmVyYXRlZEF0IjoiMjAyNi0wMS0yM1QwMjoyNjozMC43ODlaIiwiaWF0IjoxNzY5MTM1MTkwLCJleHAiOjE4MDA2NzExOTAsImF1ZCI6ImRvc3QtZHgtY2xpZW50IiwiaXNzIjoiZG9zdC1keC1iYWNrZW5kIn0.TvCRqzv5zKzYf9vPGiPL0JhuWehWKlHX_YfGGxjIsyc
+```
+
+### Quick Test with Postman
+1. Open Postman
+2. Create a new GET request to: `http://localhost:3000/api/organizational-units`
+3. Go to the **Headers** tab and add:
+   - **Key**: `Authorization`
+   - **Value**: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJzeXN0ZW0iLCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYXBpLWFjY2VzcyIsImdlbmVyYXRlZEF0IjoiMjAyNi0wMS0yM1QwMjoyNjozMC43ODlaIiwiaWF0IjoxNzY5MTM1MTkwLCJleHAiOjE4MDA2NzExOTAsImF1ZCI6ImRvc3QtZHgtY2xpZW50IiwiaXNzIjoiZG9zdC1keC1iYWNrZW5kIn0.TvCRqzv5zKzYf9vPGiPL0JhuWehWKlHX_YfGGxjIsyc`
+4. Click **Send**
+
+### Quick Test with cURL
+```bash
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJzeXN0ZW0iLCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYXBpLWFjY2VzcyIsImdlbmVyYXRlZEF0IjoiMjAyNi0wMS0yM1QwMjoyNjozMC43ODlaIiwiaWF0IjoxNzY5MTM1MTkwLCJleHAiOjE4MDA2NzExOTAsImF1ZCI6ImRvc3QtZHgtY2xpZW50IiwiaXNzIjoiZG9zdC1keC1iYWNrZW5kIn0.TvCRqzv5zKzYf9vPGiPL0JhuWehWKlHX_YfGGxjIsyc" http://localhost:3000/api/organizational-units
+```
+
 ## Authentication
 Requires JWT authentication via `Authorization: Bearer <token>` header.
 

@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify';
-import type { OrganizationalUnitRepository } from '../../repositories/organizationalunitlist/OrganizationalUnitRepository';
-import type { OrganizationalUnitEntity } from '../../entities/organizationalunitlist/OrganizationalUnitEntity';
+import type { OrganizationalUnitRepository } from '../../repositories/organizational-unit-list/organizationalUnitRepository';
+import type { OrganizationalUnitEntity } from '../../entities/organizational-unit-list/organizationalUnitEntity';
 import { TYPES } from '../../../di/types';
 
 @injectable()

@@ -1,6 +1,6 @@
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJzeXN0ZW0iLCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYXBpLWFjY2VzcyIsImdlbmVyYXRlZEF0IjoiMjAyNi0wMi0wMlQwOTo1NzoxOS4wNDdaIiwiaWF0IjoxNzcwMDI2MjM5LCJleHAiOjE4MDE1NjIyMzksImF1ZCI6ImRvc3QtZHgtY2xpZW50IiwiaXNzIjoiZG9zdC1keC1iYWNrZW5kIn0.D-dhlUX2v46hrFSXM0eDDc4K63-52PGbmRn6KwJLIME",
-  "generatedAt": "2026-02-02T09:57:19.058Z",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJzeXN0ZW0iLCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYXBpLWFjY2VzcyIsImdlbmVyYXRlZEF0IjoiMjAyNi0wMi0wM1QwNjoyNzozNC43MzdaIiwiaWF0IjoxNzcwMTAwMDU0LCJleHAiOjE4MDE2MzYwNTQsImF1ZCI6ImRvc3QtZHgtY2xpZW50IiwiaXNzIjoiZG9zdC1keC1iYWNrZW5kIn0.nZpbBQIjDyEWQyHd0fS3mugM1uujenwZ53LlL92zPAw",
+  "generatedAt": "2026-02-03T06:27:34.740Z",
   "expiresIn": "365d",
   "userId": "system",
   "role": "admin"

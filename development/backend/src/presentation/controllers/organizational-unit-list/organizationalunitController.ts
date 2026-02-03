@@ -1,7 +1,7 @@
 import { injectable, inject } from 'inversify';
 import type { Request, Response } from 'express';
-import { GetAllOrganizationalUnitsUseCase } from '../../../domain/use-cases/organizationalunitlist/getOrganizationalUnitUseCase';
-import type { OrganizationalUnitResponseDto } from '../../models/dto/organizationalunitlist/OrganizationalUnitDto.ts';
+import { GetAllOrganizationalUnitsUseCase } from '../../../domain/use-cases/organizational-unit-list/getOrganizationalUnitUseCase';
+import type { OrganizationalUnitResponseDto } from '../../models/dto/organizational-unit-list/organizationalunitDto';
 import { createSuccessResponse, createErrorResponse } from '../../models/dto/GlobalResponseDto';
 import { TYPES } from '../../../di/types';
 

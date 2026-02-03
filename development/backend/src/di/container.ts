@@ -12,10 +12,10 @@ import { GetAgencyBySectorUseCase } from '../domain/use-cases/agency/GetAgencyBy
 import { AgencyController } from '../presentation/controllers/agency/AgencyController';
 
 // Organization API
-import { OrganizationalUnitRepositoryImp } from '../data/repositories-imp/organizationalunitlist/OrganizationalUnitRepositoryImp';
-import type { OrganizationalUnitRepository } from '../domain/repositories/organizationalunitlist/OrganizationalUnitRepository';
-import { GetAllOrganizationalUnitsUseCase } from '../domain/use-cases/organizationalunitlist/getOrganizationalUnitUseCase';
-import { OrganizationalUnitController } from '../presentation/controllers/organization/OrganizationalUnitController';
+import { OrganizationalUnitRepositoryImp } from '../data/repositories-imp/organizational-unit-list/organizationalUnitRepositoryImp';
+import type { OrganizationalUnitRepository } from '../domain/repositories/organizational-unit-list/organizationalUnitRepository';
+import { GetAllOrganizationalUnitsUseCase } from '../domain/use-cases/organizational-unit-list/getOrganizationalUnitUseCase';
+import { OrganizationalUnitController } from '../presentation/controllers/organizational-unit-list/organizationalunitController';
 
 // Auth
 import { AuthController } from '../presentation/controllers/auth/AuthController';
