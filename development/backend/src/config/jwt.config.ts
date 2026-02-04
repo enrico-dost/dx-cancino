@@ -48,27 +48,79 @@ export const verifyToken = (token: string): any => {
   return jwt.verify(token, JWT_SECRET);
 };
 
-// AUTO-GENERATE ON STARTUP
+// TOKEN MANAGEMENT ON STARTUP
 console.log('===========================================');
 console.log('🔐 Dynamic JWT Configuration Loaded');
 console.log('===========================================');
 
-// Generate token automatically
-const autoToken = generateDynamicToken();
+const TOKEN_FILE = './current_token.json';
 
-// Display in console
-console.log('🚀 Auto-Generated Token (valid for 1 year):');
-console.log('Authorization: Bearer', autoToken);
-
-// Save to file
-const tokenData = {
-  token: autoToken,
-  generatedAt: new Date().toISOString(),
-  expiresIn: JWT_CONFIG.expiresIn,
-  userId: 'system',
-  role: 'admin'
-};
-
-fs.writeFileSync('./current_token.json', JSON.stringify(tokenData, null, 2));
-console.log('💾 Token saved to: current_token.json');
-console.log('===========================================');
+// Check if token file exists
+if (fs.existsSync(TOKEN_FILE)) {
+  try {
+    const existingTokenData = JSON.parse(fs.readFileSync(TOKEN_FILE, 'utf-8'));
+    
+    // Verify if token is still valid
+    try {
+      verifyToken(existingTokenData.token);
+      console.log('✅ Using existing token from current_token.json');
+      console.log('📅 Generated at:', existingTokenData.generatedAt);
+      console.log('Authorization: Bearer', existingTokenData.token);
+      console.log('===========================================');
+    } catch (error) {
+      console.log('⚠️  Existing token expired or invalid, generating new token...');
+      
+      // Generate new token
+      const autoToken = generateDynamicToken();
+      const tokenData = {
+        token: autoToken,
+        generatedAt: new Date().toISOString(),
+        expiresIn: JWT_CONFIG.expiresIn,
+        userId: 'system',
+        role: 'admin'
+      };
+      
+      fs.writeFileSync(TOKEN_FILE, JSON.stringify(tokenData, null, 2));
+      console.log('🚀 New Token Generated (valid for 1 year):');
+      console.log('Authorization: Bearer', autoToken);
+      console.log('💾 Token saved to: current_token.json');
+      console.log('===========================================');
+    }
+  } catch (error) {
+    console.error('❌ Error reading token file, generating new token...');
+    
+    // Generate new token
+    const autoToken = generateDynamicToken();
+    const tokenData = {
+      token: autoToken,
+      generatedAt: new Date().toISOString(),
+      expiresIn: JWT_CONFIG.expiresIn,
+      userId: 'system',
+      role: 'admin'
+    };
+    
+    fs.writeFileSync(TOKEN_FILE, JSON.stringify(tokenData, null, 2));
+    console.log('🚀 New Token Generated (valid for 1 year):');
+    console.log('Authorization: Bearer', autoToken);
+    console.log('💾 Token saved to: current_token.json');
+    console.log('===========================================');
+  }
+} else {
+  console.log('📝 No existing token found, generating new token...');
+  
+  // Generate token automatically
+  const autoToken = generateDynamicToken();
+  const tokenData = {
+    token: autoToken,
+    generatedAt: new Date().toISOString(),
+    expiresIn: JWT_CONFIG.expiresIn,
+    userId: 'system',
+    role: 'admin'
+  };
+  
+  fs.writeFileSync(TOKEN_FILE, JSON.stringify(tokenData, null, 2));
+  console.log('🚀 New Token Generated (valid for 1 year):');
+  console.log('Authorization: Bearer', autoToken);
+  console.log('💾 Token saved to: current_token.json');
+  console.log('===========================================');
+}
