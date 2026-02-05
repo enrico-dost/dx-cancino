@@ -9,7 +9,7 @@ const __dirname = dirname(__filename);
 export default {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  testMatch: ['**/test/userManagement/**/*.test.ts'],
+  testMatch: ['**/test/**/*.test.ts'],
   moduleFileExtensions: ['ts', 'js', 'json', 'node'],
   // --- REMOVE moduleNameMapper ---
   // moduleNameMapper: {
