@@ -114,12 +114,20 @@ export class OrganizationalUnitController {
         return;
       }
 
-      const response: OrganizationalUnitResponseDto = {
-        org_unit_id: updatedUnit.org_unit_id,
-        org_unit_name: updatedUnit.org_unit_name,
-        parent_unit_name: updatedUnit.parent_unit_name,
-        unit_type: updatedUnit.unit_type,
-        complete_address: updatedUnit.complete_address
+      const response = {
+        status: 200,
+        message: 'Organizational unit updated successfully.',
+        data: {
+          org_unit_id: updatedUnit.org_unit_id,
+          org_unit_name: updatedUnit.org_unit_name,
+          parent_unit_name: updatedUnit.parent_unit_name,
+          unit_type: updatedUnit.unit_type,
+          org_unit_descr: updatedUnit.org_unit_descr,
+          complete_address: updatedUnit.complete_address,
+          latitude: updatedUnit.latitude,
+          longitude: updatedUnit.longitude,
+          updated_at: updatedUnit.updated_at
+        }
       };
 
       res.status(200).json(response);

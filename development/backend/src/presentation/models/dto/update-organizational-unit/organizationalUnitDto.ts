@@ -17,5 +17,9 @@ export interface OrganizationalUnitResponseDto {
   org_unit_name: string;
   parent_unit_name: string | null;
   unit_type: string;
+  org_unit_descr?: string;
   complete_address: string;
+  latitude?: string;
+  longitude?: string;
+  updated_at?: string;
 }

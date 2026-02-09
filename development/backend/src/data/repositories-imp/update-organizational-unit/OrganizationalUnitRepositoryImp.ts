@@ -14,9 +14,13 @@ export class OrganizationalUnitRepositoryImp implements OrganizationalUnitReposi
       SELECT
         ou.org_unit_id,
         ou.org_unit_name,
+        ou.org_unit_descr,
         parent_ou.org_unit_name as parent_unit_name,
         ut.unit_type_name,
-        ou.address
+        ou.address,
+        ou.latitude,
+        ou.longitude,
+        ou.updated_at
       FROM
         tblorganizational_units ou
       LEFT JOIN tblorganizational_units parent_ou ON ou.parent_org_unit_id = parent_ou.org_unit_id
