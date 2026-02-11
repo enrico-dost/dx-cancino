@@ -1,34 +1,101 @@
-import { Request, Response, NextFunction } from 'express';
-import { verifyToken } from '../config/jwt.config.js';
+import type { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
 
-export interface AuthRequest extends Request {
-  user?: {
-    userId: string;
-    role: string;
-    type: string;
-    generatedAt: string;
-  };
+// Extended JWT payload interface to support multiple auth types
+export interface JwtPayload {
+  userId: string | number;
+  email?: string;
+  role?: string;
+  type?: string;
+  generatedAt?: string;
 }
 
-export const authenticateJWT = (req: AuthRequest, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
-  
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({
-      status: 401,
-      message: 'unauthorized',
-      data: {}
-    });
-  }
+// Extended Request interface with user context
+export interface AuthenticatedRequest extends Request {
+  user?: JwtPayload;
+}
 
-  const token = authHeader.substring(7); // Remove 'Bearer ' prefix
+// Type alias for backward compatibility
+export interface AuthRequest extends AuthenticatedRequest {}
 
+export const authenticateJWT = (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+): void => {
   try {
-    const decoded = verifyToken(token);
-    req.user = decoded; // Attach user info to request
+    // Get the authorization header
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+      res.status(401).json({
+        status: 401,
+        message: 'Authorization header missing',
+        data: {}
+      });
+      return;
+    }
+
+    // Check if it's a Bearer token
+    if (!authHeader.startsWith('Bearer ')) {
+      res.status(401).json({
+        status: 401,
+        message: 'Invalid authorization format. Expected: Bearer <token>',
+        data: {}
+      });
+      return;
+    }
+
+    // Extract the token
+    const token = authHeader.substring(7);
+
+    if (!token) {
+      res.status(401).json({
+        status: 401,
+        message: 'Token missing',
+        data: {}
+      });
+      return;
+    }
+
+    // Verify the token
+    const jwtSecret = process.env.JWT_SECRET;
+    
+    if (!jwtSecret) {
+      console.error('JWT_SECRET is not set in environment variables');
+      res.status(500).json({
+        status: 500,
+        message: 'Internal server configuration error',
+        data: {}
+      });
+      return;
+    }
+
+    // Verify and decode the token
+    const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
+    req.user = decoded;
     next();
   } catch (error) {
-    return res.status(401).json({
+    if (error instanceof jwt.TokenExpiredError) {
+      res.status(401).json({
+        status: 401,
+        message: 'Token expired',
+        data: {}
+      });
+      return;
+    }
+
+    if (error instanceof jwt.JsonWebTokenError) {
+      res.status(401).json({
+        status: 401,
+        message: 'Invalid token',
+        data: {}
+      });
+      return;
+    }
+
+    console.error('Error in authenticateJWT middleware:', error);
+    res.status(401).json({
       status: 401,
       message: 'unauthorized',
       data: {}
