@@ -1,24 +1,36 @@
-//this is a sample index file
-//this file contains the configuration of your backend code
-//this is where the initiliazation and testing of databse connection takes place
-//this starts the server using DI
+// DOST DX Organization Management Backend
+// Main entry point for the application
+// Initializes database connection and registers API routes
 
+console.log('Starting DX Organization Management Backend...');
 
 import 'reflect-metadata'; // MUST be first import
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-
-// Agency imports
-import { createAgencyRoutes } from './presentation/routes/agency/agencyRoutes';
 import { container } from './di/container';
 import { TYPES } from './di/types';
-import { DatabaseService } from './data/data-sources/DatabaseService';
-import { AgencyController } from './presentation/controllers/agency/AgencyController';
 
-// Auth imports
+// Database
+import { DatabaseService } from './data/data-sources/DatabaseService';
+
+// Agency API
+import { AgencyController } from './presentation/controllers/agency/AgencyController';
+import { createAgencyRoutes } from './presentation/routes/agency/agencyRoutes';
+
+// Organization API
+import { OrganizationalUnitController } from './presentation/controllers/organizational-unit-list/organizationalunitController';
+import { createOrganizationalUnitRoutes } from './presentation/routes/organization-unit-list/organizationalunitRoutes';
+
+// Auth
 import { AuthController } from './presentation/controllers/auth/AuthController';
 import { createAuthRoutes } from './presentation/routes/auth/authRoutes';
+
+// Response Models
+import { createSuccessResponse, createErrorResponse } from './presentation/models/dto/GlobalResponseDto';
+
+// JWT Configuration
+import './config/jwt.config'; // Load JWT configuration and display token
 
 // Load environment variables
 dotenv.config();
@@ -35,7 +47,7 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://yourdomain.com'],
+  origin: ['http://localhost:3000', 'http://localhost:5173', 'https://yourdomain.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
@@ -44,7 +56,7 @@ const corsOptions = {
 const app = express();
 app.use(cors(corsOptions));
 
-const PORT: number = process.env.PORT ? parseInt(process.env.PORT) : 8080;
+const PORT: number = process.env.BACKEND_PORT ? parseInt(process.env.BACKEND_PORT) : (process.env.PORT ? parseInt(process.env.PORT) : 8080);
 const HOST: string = process.env.HOST || '0.0.0.0';
 
 // Ensure JWT_SECRET is set
@@ -63,13 +75,48 @@ app.use(express.json()); // For parsing JSON request bodies
 
 // Basic health check route
 app.get('/', (req, res) => {
-  res.send('Node.js TypeScript Agency Backend is running!');
+  const response = createSuccessResponse(
+    {
+      service: 'DX Organization Management Backend',
+      version: '1.0.0',
+      status: 'operational',
+      apis: ['Agency API', 'Organization API']
+    }
+  );
+  res.json(response);
+});
+
+// Test database connection endpoint
+app.get('/api/test/db', async (req, res) => {
+  try {
+    const databaseService = container.get<DatabaseService>(TYPES.DatabaseService);
+    const pool = databaseService.getPool();
+    const result = await pool.query('SELECT NOW() as current_time, version() as pg_version');
+    
+    const response = createSuccessResponse(
+      {
+        current_time: result.rows[0].current_time,
+        postgres_version: result.rows[0].pg_version
+      }
+    );
+    res.json(response);
+  } catch (error) {
+    const errorResponse = createErrorResponse(
+      'Database connection failed',
+      500,
+      { error: error instanceof Error ? error.message : 'Unknown error' }
+    );
+    res.status(500).json(errorResponse);
+  }
 });
 
 // Track if routes are initialized
 let routesInitialized = false;
 
-// Initialize routes function
+/**
+ * Initialize routes function
+ * Registers all API routes in a scalable manner
+ */
 const initializeRoutes = async () => {
   if (routesInitialized) {
     console.log('Routes already initialized, skipping...');
@@ -77,16 +124,8 @@ const initializeRoutes = async () => {
   }
 
   try {
-    // Get controller from DI container
-    const agencyController = container.get<AgencyController>(TYPES.AgencyController);
-    const authController = container.get<AuthController>(TYPES.AuthController);
-    
-    // Auth Routes (before other routes)
-    app.use('/api/auth', createAuthRoutes(authController));
-    
-    // Routes
-    app.use('/api/agencies', createAgencyRoutes(agencyController));
-    
+    await initializeDatabase();
+    registerRoutes();
     routesInitialized = true;
     console.log('Routes initialized successfully');
     return app;
@@ -96,6 +135,61 @@ const initializeRoutes = async () => {
   }
 };
 
+/**
+ * Initialize database connection
+ */
+const initializeDatabase = async (): Promise<void> => {
+  const databaseService = container.get<DatabaseService>(TYPES.DatabaseService);
+  await databaseService.initialize();
+};
+
+/**
+ * Register application routes
+ * Modular route registration for scalability
+ */
+const registerRoutes = (): void => {
+  // Main API route - Lists all available endpoints
+  app.get('/api', (req, res) => {
+    const response = createSuccessResponse(
+      {
+        version: '1.0.0',
+        endpoints: {
+          auth: '/api/auth',
+          agencies: '/api/agencies',
+          organizationalUnits: '/api/organizational-units'
+        }
+      }
+    );
+    res.json(response);
+  });
+
+  // ============================================
+  // Auth Routes - Must be registered first
+  // ============================================
+  const authController = container.get<AuthController>(TYPES.AuthController);
+  app.use('/api/auth', createAuthRoutes(authController));
+
+  // ============================================
+  // Agency API Routes
+  // ============================================
+  const agencyController = container.get<AgencyController>(TYPES.AgencyController);
+  app.use('/api/agencies', createAgencyRoutes(agencyController));
+
+  // ============================================
+  // Organization API Routes
+  // ============================================
+  const organizationalUnitController = container.get<OrganizationalUnitController>(TYPES.OrganizationalUnitController);
+  app.use('/api', createOrganizationalUnitRoutes(organizationalUnitController));
+};
+
+// For testing: automatically initialize routes when imported
+if (process.env.NODE_ENV === 'test') {
+  // Initialize routes immediately for tests
+  initializeRoutes().catch(error => {
+    console.error('Failed to initialize routes for testing:', error);
+  });
+}
+
 // Start the server using DI (only in non-test environment)
 if (process.env.NODE_ENV !== 'test') {
   const startServer = async () => {
@@ -103,9 +197,13 @@ if (process.env.NODE_ENV !== 'test') {
       await initializeRoutes();
       
       app.listen(PORT, HOST, () => {
-        console.log(`Server is running on port ${PORT}`);
-        console.log(`Access it at: http://${HOST}:${PORT}`);
-        console.log(`JWT Secret loaded: ${process.env.JWT_SECRET ? 'Yes' : 'No (using default)'}`);
+        console.log(`🚀 Server is running on port ${PORT}`);
+        console.log(`📍 Access it at: http://${HOST}:${PORT}`);
+        console.log(`🔐 JWT Secret loaded: ${process.env.JWT_SECRET ? 'Yes' : 'No (using default)'}`);
+        console.log(`📋 Available APIs:`);
+        console.log(`   - Auth:         /api/auth`);
+        console.log(`   - Agencies:     /api/agencies/by-sector/list`);
+        console.log(`   - Org Units:    /api/organizational-units`);
       });
     } catch (error) {
       console.error('Failed to start server:', error);

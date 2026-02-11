@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import type { Request, Response } from 'express';
-import { generateDynamicToken } from '../../../config/jwt.config.js';
-import { createSuccessResponse, createErrorResponse } from '../../models/dto/GlobalResponseDto.js';
+import { generateDynamicToken } from '../../../config/jwt.config';
+import { createSuccessResponse, createErrorResponse } from '../../models/dto/GlobalResponseDto';
 
 @injectable()
 export class AuthController {
