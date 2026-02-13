@@ -13,10 +13,15 @@ export const TYPES = {
   GetAgencyBySectorUseCase: Symbol.for('GetAgencyBySectorUseCase'),
   AgencyController: Symbol.for('AgencyController'),
   
-  // Organization API
+  // Organization List API
   OrganizationalUnitRepository: Symbol.for('OrganizationalUnitRepository'),
   GetAllOrganizationalUnitsUseCase: Symbol.for('GetAllOrganizationalUnitsUseCase'),
   OrganizationalUnitController: Symbol.for('OrganizationalUnitController'),
+  
+  // Update Organizational Unit API
+  UpdateOrganizationalUnitRepository: Symbol.for('UpdateOrganizationalUnitRepository'),
+  UpdateOrganizationalUnitUseCase: Symbol.for('UpdateOrganizationalUnitUseCase'),
+  UpdateOrganizationalUnitController: Symbol.for('UpdateOrganizationalUnitController'),
   
   // Auth
   AuthController: Symbol.for('AuthController'),

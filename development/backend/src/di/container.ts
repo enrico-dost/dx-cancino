@@ -11,11 +11,17 @@ import { AgencyRepositoryImp } from '../data/repositories-imp/agency/AgencyRepos
 import { GetAgencyBySectorUseCase } from '../domain/use-cases/agency/GetAgencyBySectorUseCase';
 import { AgencyController } from '../presentation/controllers/agency/AgencyController';
 
-// Organization API
-import { OrganizationalUnitRepositoryImp } from '../data/repositories-imp/organizational-unit-list/organizationalUnitRepositoryImp';
+// Organization List API
+import { OrganizationalUnitRepositoryImp as OrgListRepositoryImp } from '../data/repositories-imp/organizational-unit-list/organizationalUnitRepositoryImp';
 import type { OrganizationalUnitRepository } from '../domain/repositories/organizational-unit-list/organizationalUnitRepository';
 import { GetAllOrganizationalUnitsUseCase } from '../domain/use-cases/organizational-unit-list/getOrganizationalUnitUseCase';
-import { OrganizationalUnitController } from '../presentation/controllers/organizational-unit-list/organizationalunitController';
+import { OrganizationalUnitController as OrgListController } from '../presentation/controllers/organizational-unit-list/organizationalunitController';
+import type { OrganizationalUnitController } from '../presentation/controllers/organizational-unit-list/organizationalunitController';
+
+// Update Organizational Unit API
+import { OrganizationalUnitRepositoryImp as UpdateOrgRepositoryImp } from '../data/repositories-imp/update-organizational-unit/OrganizationalUnitRepositoryImp';
+import { UpdateOrganizationalUnitUseCase } from '../domain/use-cases/update-organizational-unit/updateOrganizationalUnitUseCase';
+import { OrganizationalUnitController as UpdateOrgController } from '../presentation/controllers/update-organizational-unit/organizationalUnitController';
 
 // Auth
 import { AuthController } from '../presentation/controllers/auth/AuthController';
@@ -57,10 +63,10 @@ container.bind(TYPES.AgencyController)
   .inSingletonScope();
 
 // ============================================
-// Organization API Module
+// Organization List API Module
 // ============================================
 container.bind<OrganizationalUnitRepository>(TYPES.OrganizationalUnitRepository)
-  .to(OrganizationalUnitRepositoryImp)
+  .to(OrgListRepositoryImp)
   .inSingletonScope();
 
 container.bind<GetAllOrganizationalUnitsUseCase>(TYPES.GetAllOrganizationalUnitsUseCase)
@@ -68,7 +74,22 @@ container.bind<GetAllOrganizationalUnitsUseCase>(TYPES.GetAllOrganizationalUnits
   .inSingletonScope();
 
 container.bind<OrganizationalUnitController>(TYPES.OrganizationalUnitController)
-  .to(OrganizationalUnitController)
+  .to(OrgListController)
+  .inSingletonScope();
+
+// ============================================
+// Update Organizational Unit API Module
+// ============================================
+container.bind(TYPES.UpdateOrganizationalUnitRepository)
+  .to(UpdateOrgRepositoryImp)
+  .inSingletonScope();
+
+container.bind(TYPES.UpdateOrganizationalUnitUseCase)
+  .to(UpdateOrganizationalUnitUseCase)
+  .inSingletonScope();
+
+container.bind(TYPES.UpdateOrganizationalUnitController)
+  .to(UpdateOrgController)
   .inSingletonScope();
 
 // ============================================

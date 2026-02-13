@@ -18,9 +18,13 @@ import { DatabaseService } from './data/data-sources/DatabaseService';
 import { AgencyController } from './presentation/controllers/agency/AgencyController';
 import { createAgencyRoutes } from './presentation/routes/agency/agencyRoutes';
 
-// Organization API
-import { OrganizationalUnitController } from './presentation/controllers/organizational-unit-list/organizationalunitController';
-import { createOrganizationalUnitRoutes } from './presentation/routes/organization-unit-list/organizationalunitRoutes';
+// Organization List API
+import { OrganizationalUnitController as OrgListController } from './presentation/controllers/organizational-unit-list/organizationalunitController';
+import { createOrganizationalUnitRoutes as createOrgListRoutes } from './presentation/routes/organization-unit-list/organizationalunitRoutes';
+
+// Update Organizational Unit API
+import { OrganizationalUnitController as UpdateOrgController } from './presentation/controllers/update-organizational-unit/organizationalUnitController';
+import { createOrganizationalUnitRoutes as createUpdateOrgRoutes } from './presentation/routes/update-organizational-unit/organizationalUnitRoutes';
 
 // Auth
 import { AuthController } from './presentation/controllers/auth/AuthController';
@@ -176,10 +180,16 @@ const registerRoutes = (): void => {
   app.use('/api/agencies', createAgencyRoutes(agencyController));
 
   // ============================================
-  // Organization API Routes
+  // Organization List API Routes
   // ============================================
-  const organizationalUnitController = container.get<OrganizationalUnitController>(TYPES.OrganizationalUnitController);
-  app.use('/api', createOrganizationalUnitRoutes(organizationalUnitController));
+  const orgListController = container.get<OrgListController>(TYPES.OrganizationalUnitController);
+  app.use('/api', createOrgListRoutes(orgListController));
+
+  // ============================================
+  // Update Organizational Unit API Routes
+  // ============================================
+  const updateOrgController = container.get<UpdateOrgController>(TYPES.UpdateOrganizationalUnitController);
+  app.use('/api/organizational-units', createUpdateOrgRoutes(updateOrgController));
 };
 
 // For testing: automatically initialize routes when imported
