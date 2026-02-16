@@ -11,5 +11,11 @@ export function createOrganizationalUnitRoutes(controller: OrganizationalUnitCon
     (req, res) => controller.getAllOrganizationalUnits(req, res)
   );
 
+    router.post(
+    '/organizational-units', 
+    authenticateJWT,
+    (req, res) => controller.createOrganizationalUnit(req, res)
+  );
+  
   return router;
 }

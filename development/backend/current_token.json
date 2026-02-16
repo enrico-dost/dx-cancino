@@ -1,0 +1,7 @@
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJzeXN0ZW0iLCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYXBpLWFjY2VzcyIsImdlbmVyYXRlZEF0IjoiMjAyNi0wMi0xNlQxMTo1MzoyNS4wOTZaIiwiaWF0IjoxNzcxMjQyODA1LCJleHAiOjE4MDI3Nzg4MDUsImF1ZCI6ImRvc3QtZHgtY2xpZW50IiwiaXNzIjoiZG9zdC1keC1iYWNrZW5kIn0.0TtVm8PL1RTuknqdXeXFi2Tr6E72H3stOfGkhWINGlY",
+  "generatedAt": "2026-02-16T11:53:25.098Z",
+  "expiresIn": "365d",
+  "userId": "system",
+  "role": "admin"
+}
