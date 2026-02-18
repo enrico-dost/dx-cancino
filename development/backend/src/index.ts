@@ -55,7 +55,7 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8080', 'https://yourdomain.com'],
+  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8004', 'https://yourdomain.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true

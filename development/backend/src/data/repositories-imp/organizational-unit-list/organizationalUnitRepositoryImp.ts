@@ -14,7 +14,7 @@ interface GeoDataResponse {
 @injectable()
 export class OrganizationalUnitRepositoryImp implements OrganizationalUnitRepository {
   // You should set this in your environment variables
-  private readonly GEO_SERVICE_BASE_URL = process.env.GEO_SERVICE_URL || 'http://localhost:30001/api';
+  private readonly GEO_SERVICE_BASE_URL = process.env.GEO_SERVICE_URL || 'http://localhost:8004/api';
 
   constructor(
     @inject(TYPES.DatabasePool) private pool: Pool
