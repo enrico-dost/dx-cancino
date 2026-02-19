@@ -133,6 +133,3 @@ dump.rdb
 
 # TernJS port file
 .tern-port
-
-
-current_token.json
