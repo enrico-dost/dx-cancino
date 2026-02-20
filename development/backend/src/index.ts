@@ -26,6 +26,10 @@ import { createOrganizationalUnitRoutes as createOrgListRoutes } from './present
 import { OrganizationalUnitController as UpdateOrgController } from './presentation/controllers/update-organizational-unit/organizationalUnitController';
 import { createOrganizationalUnitRoutes as createUpdateOrgRoutes } from './presentation/routes/update-organizational-unit/organizationalUnitRoutes';
 
+// Unit Type API
+import { UnitTypeController } from './presentation/controllers/unit-type/unitTypeController';
+import { createUnitTypeRoutes } from './presentation/routes/unit-type/unitTypeRoutes';
+
 // Auth
 import { AuthController } from './presentation/controllers/auth/AuthController';
 import { createAuthRoutes } from './presentation/routes/auth/authRoutes';
@@ -51,7 +55,7 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://localhost:5173', 'https://yourdomain.com'],
+  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8004', 'https://yourdomain.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
@@ -190,6 +194,13 @@ const registerRoutes = (): void => {
   // ============================================
   const updateOrgController = container.get<UpdateOrgController>(TYPES.UpdateOrganizationalUnitController);
   app.use('/api/organizational-units', createUpdateOrgRoutes(updateOrgController));
+
+  // ============================================
+  // Unit Type API Routes
+  // ============================================
+  const unitTypeController = container.get<UnitTypeController>(TYPES.UnitTypeController);
+  app.use('/api', createUnitTypeRoutes(unitTypeController));
+
 };
 
 // For testing: automatically initialize routes when imported
