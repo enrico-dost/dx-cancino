@@ -23,6 +23,11 @@ export const TYPES = {
   updateOrganizationalUnitUseCase: Symbol.for('updateOrganizationalUnitUseCase'),
   UpdateOrganizationalUnitController: Symbol.for('UpdateOrganizationalUnitController'),
   
+  // Unit Type API
+  UnitTypeRepository: Symbol.for("UnitTypeRepository"),
+  GetAllUnitTypesUseCase: Symbol.for("GetAllUnitTypesUseCase"),
+  UnitTypeController: Symbol.for("UnitTypeController"),
+
   // Auth
   authController: Symbol.for('authController'),
 };

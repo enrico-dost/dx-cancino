@@ -23,6 +23,11 @@ import { organizationalUnitRepositoryImp as UpdateOrgRepositoryImp } from '../da
 import { updateOrganizationalUnitUseCase } from '../domain/use-cases/update-organizational-unit/updateOrganizationalUnitUseCase';
 import { organizationalUnitController as UpdateOrgController } from '../presentation/controllers/update-organizational-unit/organizationalUnitController';
 
+// Unit Type API
+import { UnitTypeRepositoryImp } from '../data/repositories-imp/unit-type/unitTypeRepositoryImp';
+import { GetAllUnitTypesUseCase } from '../domain/use-cases/unit-type/getAllUnitTypesUseCase';
+import { UnitTypeController } from '../presentation/controllers/unit-type/unitTypeController';
+
 // Auth
 import { authController } from '../presentation/controllers/auth/authController';
 
@@ -91,6 +96,14 @@ container.bind(TYPES.updateOrganizationalUnitUseCase)
 container.bind(TYPES.UpdateOrganizationalUnitController)
   .to(UpdateOrgController)
   .inSingletonScope();
+
+
+// ============================================
+//  Unit Type API Module
+// ============================================
+container.bind(TYPES.UnitTypeRepository).to(UnitTypeRepositoryImp).inSingletonScope();
+container.bind(TYPES.GetAllUnitTypesUseCase).to(GetAllUnitTypesUseCase).inSingletonScope();
+container.bind(TYPES.UnitTypeController).to(UnitTypeController).inSingletonScope();
 
 // ============================================
 // Auth Module - Shared across all APIs

@@ -14,7 +14,7 @@ interface GeoDataResponse {
 @injectable()
 export class organizationalUnitRepositoryImp implements OrganizationalUnitRepository {
   // You should set this in your environment variables
-  private readonly GEO_SERVICE_BASE_URL = process.env.GEO_SERVICE_URL || 'http://localhost:3001/api';
+  private readonly GEO_SERVICE_BASE_URL = process.env.GEO_SERVICE_URL || 'http://localhost:8004/api';
 
   constructor(
     @inject(TYPES.DatabasePool) private pool: Pool
@@ -28,7 +28,7 @@ export class organizationalUnitRepositoryImp implements OrganizationalUnitReposi
           ou.org_unit_id,
           ou.org_unit_name,
           ou.address,
-          ou.brgy_id,
+          ou.barangay_id,
           ou.city_id,
           ou.prov_id,
           ou.region_id,
@@ -75,7 +75,7 @@ export class organizationalUnitRepositoryImp implements OrganizationalUnitReposi
         row.region_id ? this.fetchGeoData('region', row.region_id) : null,
         row.prov_id ? this.fetchGeoData('province', row.prov_id) : null,
         row.city_id ? this.fetchGeoData('city', row.city_id) : null,
-        row.brgy_id ? this.fetchGeoData('barangay', row.brgy_id) : null,
+        row.barangay_id ? this.fetchGeoData('barangay', row.barangay_id) : null,
       ]);
 
       // Build address parts in the required order
