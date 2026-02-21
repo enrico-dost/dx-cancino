@@ -1,7 +1,7 @@
 import type { AgencyModel } from '../../models/agency/AgencyModel';
 import type { AgencyEntity, AgencySectorEntity } from '../../../domain/entities/agency/AgencyEntity';
 
-export class AgencyMapper {
+export class agencyMapper {
   static toEntity(model: AgencyModel): AgencyEntity {
     return {
       org_unit_id: model.org_unit_id,

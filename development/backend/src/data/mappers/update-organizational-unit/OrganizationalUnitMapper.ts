@@ -1,6 +1,6 @@
 import type { OrganizationalUnitEntity } from '../../../domain/entities/update-organizational-unit/organizationalUnitEntity';
 
-export class OrganizationalUnitMapper {
+export class organizationalUnitMapper {
   static toEntity(row: any): OrganizationalUnitEntity {
     return {
       org_unit_id: row.org_unit_id,

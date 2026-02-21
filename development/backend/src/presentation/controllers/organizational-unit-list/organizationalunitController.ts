@@ -1,15 +1,15 @@
 import { injectable, inject } from 'inversify';
 import type { Request, Response } from 'express';
-import { GetAllOrganizationalUnitsUseCase } from '../../../domain/use-cases/organizational-unit-list/getOrganizationalUnitUseCase';
+import { getAllOrganizationalUnitsUseCase } from '../../../domain/use-cases/organizational-unit-list/getOrganizationalUnitUseCase';
 import type { OrganizationalUnitResponseDto } from '../../models/dto/organizational-unit-list/organizationalunitDto';
 import { createSuccessResponse, createErrorResponse } from '../../models/dto/GlobalResponseDto';
 import { TYPES } from '../../../di/types';
 
 @injectable()
-export class OrganizationalUnitController {
+export class organizationalUnitController {
   constructor(
-    @inject(TYPES.GetAllOrganizationalUnitsUseCase)
-    private getAllOrganizationalUnitsUseCase: GetAllOrganizationalUnitsUseCase
+    @inject(TYPES.getAllOrganizationalUnitsUseCase)
+    private getAllOrganizationalUnitsUseCase: getAllOrganizationalUnitsUseCase
   ) {}
 
   async getAllOrganizationalUnits(req: Request, res: Response): Promise<void> {
@@ -20,7 +20,7 @@ export class OrganizationalUnitController {
 
       res.status(200).json(response);
     } catch (error) {
-      console.error('Error in OrganizationalUnitController.getAllOrganizationalUnits:', error);
+      console.error('Error in organizationalUnitController.getAllOrganizationalUnits:', error);
       const errorResponse = createErrorResponse('Internal server error', 500);
       res.status(500).json(errorResponse);
     }

@@ -3,7 +3,7 @@ import type { Pool } from 'pg';
 import type { OrganizationalUnitRepository } from '../../../domain/repositories/organizational-unit-list/organizationalUnitRepository';
 import type { OrganizationalUnitEntity } from '../../../domain/entities/organizational-unit-list/organizationalUnitEntity';
 import type { OrganizationalUnitModel } from '../../models/organizational-unit-list/organizationalUnitModel';
-import { OrganizationalUnitMapper } from '../../mappers/organizational-unit-list/organizationalUnitMapper';
+import { organizationalUnitMapper } from '../../mappers/organizational-unit-list/organizationalUnitMapper';
 import { TYPES } from '../../../di/types';
 
 // Geo service response interfaces
@@ -12,7 +12,7 @@ interface GeoDataResponse {
 }
 
 @injectable()
-export class OrganizationalUnitRepositoryImp implements OrganizationalUnitRepository {
+export class organizationalUnitRepositoryImp implements OrganizationalUnitRepository {
   // You should set this in your environment variables
   private readonly GEO_SERVICE_BASE_URL = process.env.GEO_SERVICE_URL || 'http://localhost:3001/api';
 
@@ -57,7 +57,7 @@ export class OrganizationalUnitRepositoryImp implements OrganizationalUnitReposi
         })
       );
 
-      const entities = OrganizationalUnitMapper.toEntities(result.rows, addressMap);
+      const entities = organizationalUnitMapper.toEntities(result.rows, addressMap);
 
       return entities;
     } catch (error) {

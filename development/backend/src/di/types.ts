@@ -5,24 +5,24 @@
  */
 export const TYPES = {
   // Database
-  DatabaseService: Symbol.for('DatabaseService'),
+  databaseService: Symbol.for('databaseService'),
   DatabasePool: Symbol.for('DatabasePool'),
   
   // Agency API
   AgencyRepository: Symbol.for('AgencyRepository'),
-  GetAgencyBySectorUseCase: Symbol.for('GetAgencyBySectorUseCase'),
-  AgencyController: Symbol.for('AgencyController'),
+  getAgencyBySectorUseCase: Symbol.for('getAgencyBySectorUseCase'),
+  agencyController: Symbol.for('agencyController'),
   
   // Organization List API
   OrganizationalUnitRepository: Symbol.for('OrganizationalUnitRepository'),
-  GetAllOrganizationalUnitsUseCase: Symbol.for('GetAllOrganizationalUnitsUseCase'),
-  OrganizationalUnitController: Symbol.for('OrganizationalUnitController'),
+  getAllOrganizationalUnitsUseCase: Symbol.for('getAllOrganizationalUnitsUseCase'),
+  organizationalUnitController: Symbol.for('organizationalUnitController'),
   
   // Update Organizational Unit API
   UpdateOrganizationalUnitRepository: Symbol.for('UpdateOrganizationalUnitRepository'),
-  UpdateOrganizationalUnitUseCase: Symbol.for('UpdateOrganizationalUnitUseCase'),
+  updateOrganizationalUnitUseCase: Symbol.for('updateOrganizationalUnitUseCase'),
   UpdateOrganizationalUnitController: Symbol.for('UpdateOrganizationalUnitController'),
   
   // Auth
-  AuthController: Symbol.for('AuthController'),
+  authController: Symbol.for('authController'),
 };

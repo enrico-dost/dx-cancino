@@ -4,7 +4,7 @@ import type { OrganizationalUnitEntity } from '../../entities/organizational-uni
 import { TYPES } from '../../../di/types';
 
 @injectable()
-export class GetAllOrganizationalUnitsUseCase {
+export class getAllOrganizationalUnitsUseCase {
   constructor(
     @inject(TYPES.OrganizationalUnitRepository)
     private organizationalUnitRepository: OrganizationalUnitRepository
@@ -15,7 +15,7 @@ export class GetAllOrganizationalUnitsUseCase {
       const organizationalUnits = await this.organizationalUnitRepository.getAllOrganizationalUnits();
       return organizationalUnits;
     } catch (error) {
-      console.error('Error in GetAllOrganizationalUnitsUseCase:', error);
+      console.error('Error in getAllOrganizationalUnitsUseCase:', error);
       throw new Error('Failed to retrieve organizational units');
     }
   }
