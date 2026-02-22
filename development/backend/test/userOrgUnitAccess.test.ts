@@ -13,7 +13,7 @@ describe("UserOrgUnitAccessUseCases", () => {
     mockRepository = {
       upsertAccess: jest.fn(),
       getByUserId: jest.fn(),
-      existsOrgUnit: jest.fn(), // ✅ REQUIRED (fix #1)
+      existsOrgUnit: jest.fn(),
     };
   });
 
