@@ -28,6 +28,12 @@ import { UnitTypeRepositoryImp } from '../data/repositories-imp/unit-type/unitTy
 import { GetAllUnitTypesUseCase } from '../domain/use-cases/unit-type/getAllUnitTypesUseCase';
 import { UnitTypeController } from '../presentation/controllers/unit-type/unitTypeController';
 
+// User Organizational Unit Access
+import { UserOrgUnitAccessRepositoryImp } from "../data/repositories-imp/user-org-unit-access/userOrgUnitAccessRepositoryImp";
+import { UpsertUserOrgUnitAccessUseCase } from "../domain/use-cases/user-org-unit-access/upsertUserOrgUnitAccessUseCase";
+import { GetUserOrgUnitAccessByUserUseCase } from "../domain/use-cases/user-org-unit-access/getUserOrgUnitAccessByUserUseCase";
+import { UserOrgUnitAccessController } from "../presentation/controllers/user-org-unit-access/userOrgUnitAccessController";
+
 // Auth
 import { authController } from '../presentation/controllers/auth/authController';
 
@@ -104,6 +110,14 @@ container.bind(TYPES.UpdateOrganizationalUnitController)
 container.bind(TYPES.UnitTypeRepository).to(UnitTypeRepositoryImp).inSingletonScope();
 container.bind(TYPES.GetAllUnitTypesUseCase).to(GetAllUnitTypesUseCase).inSingletonScope();
 container.bind(TYPES.UnitTypeController).to(UnitTypeController).inSingletonScope();
+
+// ============================================
+//  User Organizational Unit Access API Module
+// ============================================
+container.bind(TYPES.UserOrgUnitAccessRepository).to(UserOrgUnitAccessRepositoryImp).inSingletonScope();
+container.bind(TYPES.UpsertUserOrgUnitAccessUseCase).to(UpsertUserOrgUnitAccessUseCase).inSingletonScope();
+container.bind(TYPES.GetUserOrgUnitAccessByUserUseCase).to(GetUserOrgUnitAccessByUserUseCase).inSingletonScope();
+container.bind(TYPES.UserOrgUnitAccessController).to(UserOrgUnitAccessController).inSingletonScope();
 
 // ============================================
 // Auth Module - Shared across all APIs
