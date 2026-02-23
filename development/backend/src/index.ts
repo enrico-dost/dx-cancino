@@ -12,18 +12,18 @@ import { container } from './di/container';
 import { TYPES } from './di/types';
 
 // Database
-import { DatabaseService } from './data/data-sources/DatabaseService';
+import { databaseService } from './data/data-sources/databaseService';
 
 // Agency API
-import { AgencyController } from './presentation/controllers/agency/AgencyController';
+import { agencyController } from './presentation/controllers/agency/agencyController';
 import { createAgencyRoutes } from './presentation/routes/agency/agencyRoutes';
 
 // Organization List API
-import { OrganizationalUnitController as OrgListController } from './presentation/controllers/organizational-unit-list/organizationalunitController';
+import { organizationalUnitController as OrgListController } from './presentation/controllers/organizational-unit-list/organizationalunitController';
 import { createOrganizationalUnitRoutes as createOrgListRoutes } from './presentation/routes/organization-unit-list/organizationalunitRoutes';
 
 // Update Organizational Unit API
-import { OrganizationalUnitController as UpdateOrgController } from './presentation/controllers/update-organizational-unit/organizationalUnitController';
+import { organizationalUnitController as UpdateOrgController } from './presentation/controllers/update-organizational-unit/organizationalUnitController';
 import { createOrganizationalUnitRoutes as createUpdateOrgRoutes } from './presentation/routes/update-organizational-unit/organizationalUnitRoutes';
 
 // Unit Type API
@@ -31,7 +31,7 @@ import { UnitTypeController } from './presentation/controllers/unit-type/unitTyp
 import { createUnitTypeRoutes } from './presentation/routes/unit-type/unitTypeRoutes';
 
 // Auth
-import { AuthController } from './presentation/controllers/auth/AuthController';
+import { authController } from './presentation/controllers/auth/authController';
 import { createAuthRoutes } from './presentation/routes/auth/authRoutes';
 
 // Response Models
@@ -97,7 +97,7 @@ app.get('/', (req, res) => {
 // Test database connection endpoint
 app.get('/api/test/db', async (req, res) => {
   try {
-    const databaseService = container.get<DatabaseService>(TYPES.DatabaseService);
+    const databaseService = container.get<databaseService>(TYPES.databaseService);
     const pool = databaseService.getPool();
     const result = await pool.query('SELECT NOW() as current_time, version() as pg_version');
     
@@ -147,7 +147,7 @@ const initializeRoutes = async () => {
  * Initialize database connection
  */
 const initializeDatabase = async (): Promise<void> => {
-  const databaseService = container.get<DatabaseService>(TYPES.DatabaseService);
+  const databaseService = container.get<databaseService>(TYPES.databaseService);
   await databaseService.initialize();
 };
 
@@ -174,19 +174,19 @@ const registerRoutes = (): void => {
   // ============================================
   // Auth Routes - Must be registered first
   // ============================================
-  const authController = container.get<AuthController>(TYPES.AuthController);
+  const authController = container.get<authController>(TYPES.authController);
   app.use('/api/auth', createAuthRoutes(authController));
 
   // ============================================
   // Agency API Routes
   // ============================================
-  const agencyController = container.get<AgencyController>(TYPES.AgencyController);
+  const agencyController = container.get<agencyController>(TYPES.agencyController);
   app.use('/api/agencies', createAgencyRoutes(agencyController));
 
   // ============================================
   // Organization List API Routes
   // ============================================
-  const orgListController = container.get<OrgListController>(TYPES.OrganizationalUnitController);
+  const orgListController = container.get<OrgListController>(TYPES.organizationalUnitController);
   app.use('/api', createOrgListRoutes(orgListController));
 
   // ============================================

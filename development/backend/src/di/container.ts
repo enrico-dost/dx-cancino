@@ -4,24 +4,24 @@ import { Pool } from 'pg';
 import { TYPES } from './types';
 
 // Database
-import { DatabaseService } from '../data/data-sources/DatabaseService';
+import { databaseService } from '../data/data-sources/databaseService';
 
 // Agency API
-import { AgencyRepositoryImp } from '../data/repositories-imp/agency/AgencyRepositoryImp';
-import { GetAgencyBySectorUseCase } from '../domain/use-cases/agency/GetAgencyBySectorUseCase';
-import { AgencyController } from '../presentation/controllers/agency/AgencyController';
+import { agencyRepositoryImp } from '../data/repositories-imp/agency/agencyRepositoryImp';
+import { getAgencyBySectorUseCase } from '../domain/use-cases/agency/getAgencyBySectorUseCase';
+import { agencyController } from '../presentation/controllers/agency/agencyController';
 
 // Organization List API
-import { OrganizationalUnitRepositoryImp as OrgListRepositoryImp } from '../data/repositories-imp/organizational-unit-list/organizationalUnitRepositoryImp';
+import { organizationalUnitRepositoryImp as OrgListRepositoryImp } from '../data/repositories-imp/organizational-unit-list/organizationalUnitRepositoryImp';
 import type { OrganizationalUnitRepository } from '../domain/repositories/organizational-unit-list/organizationalUnitRepository';
-import { GetAllOrganizationalUnitsUseCase } from '../domain/use-cases/organizational-unit-list/getOrganizationalUnitUseCase';
-import { OrganizationalUnitController as OrgListController } from '../presentation/controllers/organizational-unit-list/organizationalunitController';
-import type { OrganizationalUnitController } from '../presentation/controllers/organizational-unit-list/organizationalunitController';
+import { getAllOrganizationalUnitsUseCase } from '../domain/use-cases/organizational-unit-list/getOrganizationalUnitUseCase';
+import { organizationalUnitController as OrgListController } from '../presentation/controllers/organizational-unit-list/organizationalunitController';
+import type { organizationalUnitController } from '../presentation/controllers/organizational-unit-list/organizationalunitController';
 
 // Update Organizational Unit API
-import { OrganizationalUnitRepositoryImp as UpdateOrgRepositoryImp } from '../data/repositories-imp/update-organizational-unit/OrganizationalUnitRepositoryImp';
-import { UpdateOrganizationalUnitUseCase } from '../domain/use-cases/update-organizational-unit/updateOrganizationalUnitUseCase';
-import { OrganizationalUnitController as UpdateOrgController } from '../presentation/controllers/update-organizational-unit/organizationalUnitController';
+import { organizationalUnitRepositoryImp as UpdateOrgRepositoryImp } from '../data/repositories-imp/update-organizational-unit/organizationalUnitRepositoryImp';
+import { updateOrganizationalUnitUseCase } from '../domain/use-cases/update-organizational-unit/updateOrganizationalUnitUseCase';
+import { organizationalUnitController as UpdateOrgController } from '../presentation/controllers/update-organizational-unit/organizationalUnitController';
 
 // Unit Type API
 import { UnitTypeRepositoryImp } from '../data/repositories-imp/unit-type/unitTypeRepositoryImp';
@@ -29,7 +29,7 @@ import { GetAllUnitTypesUseCase } from '../domain/use-cases/unit-type/getAllUnit
 import { UnitTypeController } from '../presentation/controllers/unit-type/unitTypeController';
 
 // Auth
-import { AuthController } from '../presentation/controllers/auth/AuthController';
+import { authController } from '../presentation/controllers/auth/authController';
 
 /**
  * Dependency Injection Container
@@ -41,13 +41,13 @@ const container = new Container();
 // ============================================
 // Database Layer - Shared across all APIs
 // ============================================
-container.bind<DatabaseService>(TYPES.DatabaseService)
-  .to(DatabaseService)
+container.bind<databaseService>(TYPES.databaseService)
+  .to(databaseService)
   .inSingletonScope();
 
 container.bind<Pool>(TYPES.DatabasePool)
   .toDynamicValue((context) => {
-    const dbService = container.get<DatabaseService>(TYPES.DatabaseService);
+    const dbService = container.get<databaseService>(TYPES.databaseService);
     return dbService.getPool();
   })
   .inSingletonScope();
@@ -56,15 +56,15 @@ container.bind<Pool>(TYPES.DatabasePool)
 // Agency API Module
 // ============================================
 container.bind(TYPES.AgencyRepository)
-  .to(AgencyRepositoryImp)
+  .to(agencyRepositoryImp)
   .inSingletonScope();
 
-container.bind(TYPES.GetAgencyBySectorUseCase)
-  .to(GetAgencyBySectorUseCase)
+container.bind(TYPES.getAgencyBySectorUseCase)
+  .to(getAgencyBySectorUseCase)
   .inSingletonScope();
 
-container.bind(TYPES.AgencyController)
-  .to(AgencyController)
+container.bind(TYPES.agencyController)
+  .to(agencyController)
   .inSingletonScope();
 
 // ============================================
@@ -74,11 +74,11 @@ container.bind<OrganizationalUnitRepository>(TYPES.OrganizationalUnitRepository)
   .to(OrgListRepositoryImp)
   .inSingletonScope();
 
-container.bind<GetAllOrganizationalUnitsUseCase>(TYPES.GetAllOrganizationalUnitsUseCase)
-  .to(GetAllOrganizationalUnitsUseCase)
+container.bind<getAllOrganizationalUnitsUseCase>(TYPES.getAllOrganizationalUnitsUseCase)
+  .to(getAllOrganizationalUnitsUseCase)
   .inSingletonScope();
 
-container.bind<OrganizationalUnitController>(TYPES.OrganizationalUnitController)
+container.bind<organizationalUnitController>(TYPES.organizationalUnitController)
   .to(OrgListController)
   .inSingletonScope();
 
@@ -89,8 +89,8 @@ container.bind(TYPES.UpdateOrganizationalUnitRepository)
   .to(UpdateOrgRepositoryImp)
   .inSingletonScope();
 
-container.bind(TYPES.UpdateOrganizationalUnitUseCase)
-  .to(UpdateOrganizationalUnitUseCase)
+container.bind(TYPES.updateOrganizationalUnitUseCase)
+  .to(updateOrganizationalUnitUseCase)
   .inSingletonScope();
 
 container.bind(TYPES.UpdateOrganizationalUnitController)
@@ -108,8 +108,8 @@ container.bind(TYPES.UnitTypeController).to(UnitTypeController).inSingletonScope
 // ============================================
 // Auth Module - Shared across all APIs
 // ============================================
-container.bind(TYPES.AuthController)
-  .to(AuthController)
+container.bind(TYPES.authController)
+  .to(authController)
   .inSingletonScope();
 
 export { container };

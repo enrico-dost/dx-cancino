@@ -1,14 +1,14 @@
 import { injectable, inject } from 'inversify';
 import { Request, Response } from 'express';
-import type { UpdateOrganizationalUnitUseCase } from '../../../domain/use-cases/update-organizational-unit/updateOrganizationalUnitUseCase';
+import type { updateOrganizationalUnitUseCase } from '../../../domain/use-cases/update-organizational-unit/updateOrganizationalUnitUseCase';
 import { TYPES } from '../../../di/types';
 import type { UpdateOrganizationalUnitRequestDto, OrganizationalUnitResponseDto } from '../../models/dto/update-organizational-unit/organizationalUnitDto';
 import type { AuthRequest } from '../../../utils/authMiddleware';
 
 @injectable()
-export class OrganizationalUnitController {
+export class organizationalUnitController {
   constructor(
-    @inject(TYPES.UpdateOrganizationalUnitUseCase) private updateOrganizationalUnitUseCase: UpdateOrganizationalUnitUseCase
+    @inject(TYPES.updateOrganizationalUnitUseCase) private updateOrganizationalUnitUseCase: updateOrganizationalUnitUseCase
   ) {}
 
   async updateOrganizationalUnit(req: AuthRequest, res: Response): Promise<void> {

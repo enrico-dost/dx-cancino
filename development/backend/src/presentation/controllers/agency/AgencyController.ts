@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify';
 import { Request, Response } from 'express';
-import type { GetAgencyBySectorUseCase } from '../../../domain/use-cases/agency/GetAgencyBySectorUseCase';
+import type { getAgencyBySectorUseCase } from '../../../domain/use-cases/agency/getAgencyBySectorUseCase';
 import { TYPES } from '../../../di/types';
 import type { AgencyBySectorResponseDto, AgencySectorDto, AgencyDto } from '../../models/dto/agency/AgencyDto';
 import type { AgencySectorEntity } from '../../../domain/entities/agency/AgencyEntity';
@@ -10,9 +10,9 @@ import type { AgencySectorEntity } from '../../../domain/entities/agency/AgencyE
  * Handles HTTP requests for agency operations
  */
 @injectable()
-export class AgencyController {
+export class agencyController {
   constructor(
-    @inject(TYPES.GetAgencyBySectorUseCase) private getAgencyBySectorUseCase: GetAgencyBySectorUseCase
+    @inject(TYPES.getAgencyBySectorUseCase) private getAgencyBySectorUseCase: getAgencyBySectorUseCase
   ) {}
 
   /**

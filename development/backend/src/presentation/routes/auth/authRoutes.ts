@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import type { AuthController } from '../../controllers/auth/AuthController';
+import type { authController } from '../../controllers/auth/authController';
 
-export function createAuthRoutes(controller: AuthController): Router {
+export function createAuthRoutes(controller: authController): Router {
   const router = Router();
 
   // Login endpoint - no authentication required

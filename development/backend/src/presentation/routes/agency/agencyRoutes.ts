@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import type { AgencyController } from '../../controllers/agency/AgencyController';
+import type { agencyController } from '../../controllers/agency/agencyController';
 import { authenticateJWT } from '../../../utils/authMiddleware.js';
 
 /**
  * Agency Routes
  * Defines routes for agency operations
  */
-export function createAgencyRoutes(agencyController: AgencyController): Router {
+export function createAgencyRoutes(agencyController: agencyController): Router {
   const router = Router();
 
   /**

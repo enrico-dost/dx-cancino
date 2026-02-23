@@ -1,8 +1,8 @@
 import { injectable, inject } from 'inversify';
 import type { AgencyRepository } from '../../../domain/repositories/agency/AgencyRepository';
 import type { AgencySectorEntity } from '../../../domain/entities/agency/AgencyEntity';
-import { AgencyMapper } from '../../mappers/agency/AgencyMapper';
-import { DatabaseService } from '../../data-sources/DatabaseService';
+import { agencyMapper } from '../../mappers/agency/agencyMapper';
+import { databaseService } from '../../data-sources/databaseService';
 import { TYPES } from '../../../di/types';
 
 /**
@@ -10,8 +10,8 @@ import { TYPES } from '../../../di/types';
  * Handles database operations for agency data
  */
 @injectable()
-export class AgencyRepositoryImp implements AgencyRepository {
-  constructor(@inject(TYPES.DatabaseService) private databaseService: DatabaseService) {}
+export class agencyRepositoryImp implements AgencyRepository {
+  constructor(@inject(TYPES.databaseService) private databaseService: databaseService) {}
 
   /**
    * Get agencies grouped by sector
@@ -33,7 +33,7 @@ export class AgencyRepositoryImp implements AgencyRepository {
 
     try {
       const result = await this.databaseService.query(query);
-      return AgencyMapper.toSectorEntity(result.rows);
+      return agencyMapper.toSectorEntity(result.rows);
     } catch (error) {
       console.error('Error fetching agencies by sector:', error);
       throw new Error('Failed to fetch agencies by sector');

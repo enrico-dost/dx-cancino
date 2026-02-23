@@ -8,7 +8,7 @@ import { TYPES } from '../../../di/types';
  * Business logic for retrieving agencies grouped by sector
  */
 @injectable()
-export class GetAgencyBySectorUseCase {
+export class getAgencyBySectorUseCase {
   constructor(
     @inject(TYPES.AgencyRepository) private agencyRepository: AgencyRepository
   ) {}

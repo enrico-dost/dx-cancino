@@ -4,7 +4,7 @@ import { generateDynamicToken } from '../../../config/jwt.config';
 import { createSuccessResponse, createErrorResponse } from '../../models/dto/GlobalResponseDto';
 
 @injectable()
-export class AuthController {
+export class authController {
   async login(req: Request, res: Response): Promise<void> {
     try {
       const { userId = 'system', role = 'admin' } = req.body;
@@ -22,7 +22,7 @@ export class AuthController {
 
       res.status(200).json(response);
     } catch (error) {
-      console.error('Error in AuthController.login:', error);
+      console.error('Error in authController.login:', error);
       const errorResponse = createErrorResponse('Internal server error', 500);
       res.status(500).json(errorResponse);
     }
@@ -45,7 +45,7 @@ export class AuthController {
 
       res.status(200).json(response);
     } catch (error) {
-      console.error('Error in AuthController.refreshToken:', error);
+      console.error('Error in authController.refreshToken:', error);
       const errorResponse = createErrorResponse('Internal server error', 500);
       res.status(500).json(errorResponse);
     }
@@ -66,7 +66,7 @@ export class AuthController {
 
       res.status(200).json(response);
     } catch (error) {
-      console.error('Error in AuthController.getToken:', error);
+      console.error('Error in authController.getToken:', error);
       const errorResponse = createErrorResponse('Internal server error', 500);
       res.status(500).json(errorResponse);
     }

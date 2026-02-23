@@ -4,7 +4,7 @@ import type { OrganizationalUnitEntity, UpdateOrganizationalUnitEntity } from '.
 import { TYPES } from '../../../di/types';
 
 @injectable()
-export class UpdateOrganizationalUnitUseCase {
+export class updateOrganizationalUnitUseCase {
   constructor(
     @inject(TYPES.OrganizationalUnitRepository) private organizationalUnitRepository: OrganizationalUnitRepository
   ) {}

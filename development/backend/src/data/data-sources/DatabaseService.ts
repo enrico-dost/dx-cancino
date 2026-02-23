@@ -21,7 +21,7 @@ export interface IDatabaseService {
  * Supports both direct queries and pool access
  */
 @injectable()
-export class DatabaseService implements IDatabaseService {
+export class databaseService implements IDatabaseService {
   private pool: Pool;
 
   constructor() {
@@ -98,13 +98,13 @@ export class DatabaseService implements IDatabaseService {
  * Alternative implementation using connection string
  * For backward compatibility with Agency API
  */
-export class PostgresDatabaseService implements IDatabaseService {
-  private dbService: DatabaseService;
+export class postgresDatabaseService implements IDatabaseService {
+  private dbService: databaseService;
 
   constructor(connectionString: string) {
-    // Set DATABASE_URL temporarily for DatabaseService
+    // Set DATABASE_URL temporarily for databaseService
     process.env.DATABASE_URL = connectionString;
-    this.dbService = new DatabaseService();
+    this.dbService = new databaseService();
   }
 
   async query(text: string, params?: any[]): Promise<any> {

@@ -1,7 +1,7 @@
 import type { OrganizationalUnitModel } from '../../models/organizational-unit-list/organizationalUnitModel';
 import type { OrganizationalUnitEntity } from '../../../domain/entities/organizational-unit-list/organizationalUnitEntity';
 
-export class OrganizationalUnitMapper {
+export class organizationalUnitMapper {
   /**
    * @param model The database model with raw data
    * @param completeAddress The enriched complete address string
