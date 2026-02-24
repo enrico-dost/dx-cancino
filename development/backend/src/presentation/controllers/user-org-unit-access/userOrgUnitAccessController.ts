@@ -1,0 +1,127 @@
+import { injectable, inject } from "inversify";
+import type { Request, Response } from "express";
+import { TYPES } from "../../../di/types";
+import {
+  createSuccessResponse,
+  createErrorResponse
+} from "../../models/dto/GlobalResponseDto";
+import { UpsertUserOrgUnitAccessUseCase } from "../../../domain/use-cases/user-org-unit-access/upsertUserOrgUnitAccessUseCase";
+import { GetUserOrgUnitAccessByUserUseCase } from "../../../domain/use-cases/user-org-unit-access/getUserOrgUnitAccessByUserUseCase";
+import type { UserOrgUnitAccessResponseDto } from "../../models/dto/user-org-unit-access/userOrgUnitAccessDto";
+
+@injectable()
+export class UserOrgUnitAccessController {
+  constructor(
+    @inject(TYPES.UpsertUserOrgUnitAccessUseCase)
+    private upsertUseCase: UpsertUserOrgUnitAccessUseCase,
+
+    @inject(TYPES.GetUserOrgUnitAccessByUserUseCase)
+    private getUseCase: GetUserOrgUnitAccessByUserUseCase
+  ) {}
+
+  // PUT /api/user-org-unit-access
+  async upsert(req: Request, res: Response): Promise<void> {
+    try {
+      const { user_id, org_unit_id, perm_id, is_active } = req.body;
+
+      // Validation
+      if (user_id === undefined || user_id === null) {
+        res.status(400).json(createErrorResponse("user_id is required", 400));
+        return;
+      }
+
+      if (org_unit_id === undefined || org_unit_id === null) {
+        res.status(400).json(createErrorResponse("org_unit_id is required", 400));
+        return;
+      }
+
+      if (perm_id === undefined || perm_id === null) {
+        res.status(400).json(createErrorResponse("perm_id is required", 400));
+        return;
+      }
+
+      if (typeof is_active !== "boolean") {
+        res.status(400).json(createErrorResponse("is_active must be boolean", 400));
+        return;
+      }
+
+      const { entity, created } = await this.upsertUseCase.execute(req.body);
+
+      const statusCode = created ? 201 : 200;
+
+      const response: UserOrgUnitAccessResponseDto =
+        createSuccessResponse(entity, statusCode);
+
+      res.status(statusCode).json(response);
+
+    } catch (error) {
+      console.error("Error in UserOrgUnitAccessController.upsert:", error);
+      res.status(500).json(createErrorResponse("Internal server error", 500));
+    }
+  }
+
+  // GET /api/user-org-unit-access/:user_id
+  async getByUser(req: Request, res: Response): Promise<void> {
+    try {
+      const user_id = Number(req.params.user_id);
+
+      if (!user_id || isNaN(user_id)) {
+        res.status(400).json(createErrorResponse("Invalid user_id", 400));
+        return;
+      }
+
+      const result = await this.getUseCase.execute(user_id);
+
+      const response: UserOrgUnitAccessResponseDto =
+        createSuccessResponse(result, 200);
+
+      res.status(200).json(response);
+
+    } catch (error) {
+      console.error("Error in UserOrgUnitAccessController.getByUser:", error);
+      res.status(500).json(createErrorResponse("Internal server error", 500));
+    }
+  }
+
+  // POST /api/user-access (Grant only)
+  async grant(req: Request, res: Response): Promise<void> {
+    try {
+      const { user_id, org_unit_id, perm_id } = req.body;
+
+      if (!user_id) {
+        res.status(400).json(createErrorResponse("user_id is required", 400));
+        return;
+      }
+
+      if (!org_unit_id) {
+        res.status(400).json(createErrorResponse("org_unit_id is required", 400));
+        return;
+      }
+
+      if (!perm_id) {
+        res.status(400).json(createErrorResponse("perm_id is required", 400));
+        return;
+      }
+
+      const payload = {
+        user_id,
+        org_unit_id,
+        perm_id,
+        is_active: true
+      };
+
+      const { entity, created } = await this.upsertUseCase.execute(payload);
+
+      const statusCode = created ? 201 : 200;
+
+      const response: UserOrgUnitAccessResponseDto =
+        createSuccessResponse(entity, statusCode);
+
+      res.status(statusCode).json(response);
+
+    } catch (error) {
+      console.error("Error in UserOrgUnitAccessController.grant:", error);
+      res.status(500).json(createErrorResponse("Internal server error", 500));
+    }
+  }
+}

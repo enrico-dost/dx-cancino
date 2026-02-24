@@ -28,6 +28,12 @@ export const TYPES = {
   GetAllUnitTypesUseCase: Symbol.for("GetAllUnitTypesUseCase"),
   UnitTypeController: Symbol.for("UnitTypeController"),
 
+  // User Organizational Unit Access API Module
+  UserOrgUnitAccessRepository: Symbol.for("UserOrgUnitAccessRepository"),
+  UpsertUserOrgUnitAccessUseCase: Symbol.for("UpsertUserOrgUnitAccessUseCase"),
+  GetUserOrgUnitAccessByUserUseCase: Symbol.for("GetUserOrgUnitAccessByUserUseCase"),
+  UserOrgUnitAccessController: Symbol.for("UserOrgUnitAccessController"),
+
   // Auth
   authController: Symbol.for('authController'),
 };

@@ -30,6 +30,10 @@ import { createOrganizationalUnitRoutes as createUpdateOrgRoutes } from './prese
 import { UnitTypeController } from './presentation/controllers/unit-type/unitTypeController';
 import { createUnitTypeRoutes } from './presentation/routes/unit-type/unitTypeRoutes';
 
+// User Organizational Unit Access
+import { createUserOrgUnitAccessRoutes } from "./presentation/routes/user-org-unit-access/userOrgUnitAccessRoutes";
+import { UserOrgUnitAccessController } from "./presentation/controllers/user-org-unit-access/userOrgUnitAccessController";
+
 // Auth
 import { authController } from './presentation/controllers/auth/authController';
 import { createAuthRoutes } from './presentation/routes/auth/authRoutes';
@@ -200,6 +204,12 @@ const registerRoutes = (): void => {
   // ============================================
   const unitTypeController = container.get<UnitTypeController>(TYPES.UnitTypeController);
   app.use('/api', createUnitTypeRoutes(unitTypeController));
+
+  // ============================================
+  // User Organizational Unit Access Routes
+  // ============================================
+  const userAccessController = container.get<UserOrgUnitAccessController>(TYPES.UserOrgUnitAccessController);
+  app.use("/api", createUserOrgUnitAccessRoutes(userAccessController));
 
 };
 
