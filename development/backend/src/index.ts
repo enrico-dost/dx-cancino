@@ -28,6 +28,7 @@ import { createOrganizationalUnitRoutes as createUpdateOrgRoutes } from './prese
 
 // Unit Type API
 import { UnitTypeController } from './presentation/controllers/unit-type/unitTypeController';
+import { EditUnitTypeController } from './presentation/controllers/unit-type/editUnitTypeController';
 import { createUnitTypeRoutes } from './presentation/routes/unit-type/unitTypeRoutes';
 
 // User Organizational Unit Access
@@ -104,7 +105,7 @@ app.get('/api/test/db', async (req, res) => {
     const databaseService = container.get<databaseService>(TYPES.databaseService);
     const pool = databaseService.getPool();
     const result = await pool.query('SELECT NOW() as current_time, version() as pg_version');
-    
+
     const response = createSuccessResponse(
       {
         current_time: result.rows[0].current_time,
@@ -203,7 +204,8 @@ const registerRoutes = (): void => {
   // Unit Type API Routes
   // ============================================
   const unitTypeController = container.get<UnitTypeController>(TYPES.UnitTypeController);
-  app.use('/api', createUnitTypeRoutes(unitTypeController));
+  const editUnitTypeController = container.get<EditUnitTypeController>(TYPES.EditUnitTypeController);
+  app.use('/api', createUnitTypeRoutes(unitTypeController, editUnitTypeController));
 
   // ============================================
   // User Organizational Unit Access Routes
@@ -226,7 +228,7 @@ if (process.env.NODE_ENV !== 'test') {
   const startServer = async () => {
     try {
       await initializeRoutes();
-      
+
       app.listen(PORT, HOST, () => {
         console.log(`🚀 Server is running on port ${PORT}`);
         console.log(`📍 Access it at: http://${HOST}:${PORT}`);
@@ -241,7 +243,7 @@ if (process.env.NODE_ENV !== 'test') {
       process.exit(1);
     }
   };
-  
+
   startServer();
 }
 
