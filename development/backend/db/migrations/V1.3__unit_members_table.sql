@@ -1,7 +1,7 @@
 -- db/migrations/V1__unit_types_table.sql
 
 CREATE TABLE tblunit_members (
-    unitmembers_id INT PRIMARY KEY AUTO_INCREMENT, -- Unique identifier for each unit assignment record
+    unitmembers_id SERIAL PRIMARY KEY, -- Unique identifier for each unit assignment record
     user_id INT NULL, -- Links to tblusers.user_id
     unit_id INT NOT NULL, -- Links to tblunits.unit_id
     is_active BOOLEAN NOT NULL DEFAULT TRUE, -- 0: InActive, 1: Active
