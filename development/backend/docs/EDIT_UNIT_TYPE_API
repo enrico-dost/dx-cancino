@@ -1,0 +1,30 @@
+# Edit Unit Type API Documentation
+
+## Overview
+As a system administrator, this API allows you to update the details of an existing organizational unit type (e.g., change its name or description) to ensure the system's classification of organizational units remains accurate and up-to-date.
+
+## API Details
+* **Endpoint**: `/api/unit-type/{unit_type_id}`
+* **Method**: `PUT`
+* **Purpose**: To update an existing unit type's record using its unique ID.
+
+## Request Specification
+
+### Headers
+| Header | Value | Description |
+| :--- | :--- | :--- |
+| `Authorization` | `Bearer [your-jwt-token]` | A security token to authenticate the user. |
+| `Accept` | `application/json` | Specifies that the client expects a JSON response. |
+| `Content-Type` | `application/json` | Specifies that the request body is in JSON format. |
+
+### Path Parameters
+* `unit_type_id` (Integer): The unique identifier of the organizational unit type to be updated.
+
+### Request Body
+Partial updates are supported. You only need to include the fields you wish to change.
+```json
+{
+  "unit_type_name": "Regional Office",
+  "unit_type_descr": "An administrative unit overseeing a specific geographical region.",
+  "is_active": true
+}

@@ -34,6 +34,10 @@ export const TYPES = {
   GetUserOrgUnitAccessByUserUseCase: Symbol.for("GetUserOrgUnitAccessByUserUseCase"),
   UserOrgUnitAccessController: Symbol.for("UserOrgUnitAccessController"),
 
+  // Edit Unit Type API
+  EditUnitTypeUseCase: Symbol.for("EditUnitTypeUseCase"),
+  EditUnitTypeController: Symbol.for("EditUnitTypeController"),
+  
   // Auth
   authController: Symbol.for('authController'),
 };
