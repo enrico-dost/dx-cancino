@@ -8,6 +8,7 @@ CREATE TABLE tbluser_org_unit_access (
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    CONSTRAINT uq_user_org_perm UNIQUE (user_id, org_unit_id, perm_id),
     FOREIGN KEY (org_unit_id) REFERENCES tblorganizational_units(org_unit_id)
 );
 
