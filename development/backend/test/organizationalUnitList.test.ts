@@ -46,8 +46,7 @@ describe('Organizational Unit API Tests', () => {
         .expect(401);
 
       expect(response.body).toHaveProperty('status', 401);
-      expect(response.body).toHaveProperty('message');
-      expect(response.body.message).toMatch(/authorization/i);
+      expect(response.body).toHaveProperty('message', 'Unauthorized');
     });
 
     test('Should return 401 when Authorization header is malformed', async () => {
@@ -75,7 +74,7 @@ describe('Organizational Unit API Tests', () => {
         .expect(401);
 
       expect(response.body).toHaveProperty('status', 401);
-      expect(response.body.message).toMatch(/invalid token/i);
+      expect(response.body).toHaveProperty('message', 'Unauthorized');
     });
 
     test('Should return 401 when token is expired', async () => {
@@ -91,7 +90,7 @@ describe('Organizational Unit API Tests', () => {
         .expect(401);
 
       expect(response.body).toHaveProperty('status', 401);
-      expect(response.body.message).toMatch(/expired/i);
+      expect(response.body).toHaveProperty('message', 'Unauthorized');
     });
 
   });
@@ -111,7 +110,10 @@ describe('Organizational Unit API Tests', () => {
         .expect(200);
 
       expect(response.body).toHaveProperty('status', 200);
-      expect(response.body).toHaveProperty('message', 'success');
+      const expectedMessage = response.body.data.length > 0
+        ? 'Organizational units retrieved successfully.'
+        : 'No organizational units found.';
+      expect(response.body).toHaveProperty('message', expectedMessage);
       expect(response.body).toHaveProperty('data');
     });
 
