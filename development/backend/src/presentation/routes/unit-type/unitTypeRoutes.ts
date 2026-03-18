@@ -10,7 +10,7 @@ export function createUnitTypeRoutes(controller: UnitTypeController, editControl
     controller.getAllUnitTypes(req, res)
   );
 
-  router.put("/unit-type/:unit_type_id", (req, res) => 
+  router.put("/unit-types/:unit_type_id", authenticateJWT, (req, res) =>
     editController.handle(req, res)
 );
 
