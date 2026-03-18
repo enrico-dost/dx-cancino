@@ -1,8 +1,8 @@
 import { injectable, inject } from 'inversify';
 import type { OrganizationalUnitRepository } from '../../../domain/repositories/update-organizational-unit/organizationalUnitRepository';
 import type { OrganizationalUnitEntity, UpdateOrganizationalUnitEntity } from '../../../domain/entities/update-organizational-unit/organizationalUnitEntity';
-import { organizationalUnitMapper } from '../../mappers/update-organizational-unit/organizationalUnitMapper';
-import { databaseService } from '../../data-sources/databaseService';
+import { organizationalUnitMapper } from '../../mappers/update-organizational-unit/OrganizationalUnitMapper';
+import { databaseService } from '../../data-sources/DatabaseService';
 import { TYPES } from '../../../di/types';
 
 @injectable()

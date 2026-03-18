@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import type { agencyController } from '../../controllers/agency/agencyController';
+import type { agencyController } from '../../controllers/agency-by-sector/AgencyController';
 import { authenticateJWT } from '../../../utils/authMiddleware.js';
 
 /**
