@@ -34,7 +34,7 @@ Accept: application/json
 ```json
 {
   "status": 200,
-  "message": "success",
+  "message": "Agency dropdown list retrieved successfully.",
   "data": [
     {
       "org_unit_id": 101,
@@ -100,7 +100,7 @@ Accept: application/json
     },
     {
       "org_unit_id": 155,
-      "org_unit_name": "S&T Service Institutes",
+      "org_unit_name": "Scientific and Technological Services",
       "agencies": [
         {
           "org_unit_id": 146,
@@ -119,7 +119,7 @@ Accept: application/json
         },
         {
           "org_unit_id": 150,
-          "org_unit_name": "PSHS",
+          "org_unit_name": "Philippine Science High School System",
           "parent_org_unit_id": 155
         },
         {
@@ -136,7 +136,7 @@ Accept: application/json
     },
     {
       "org_unit_id": 157,
-      "org_unit_name": "Advisory Body",
+      "org_unit_name": "Collegial and Scientific Bodies",
       "agencies": [
         {
           "org_unit_id": 156,
@@ -154,11 +154,20 @@ Accept: application/json
 }
 ```
 
+**Response (Success - 200, No Data):**
+```json
+{
+  "status": 200,
+  "message": "No agencies found.",
+  "data": []
+}
+```
+
 **Response (Error - 401):**
 ```json
 {
   "status": 401,
-  "message": "unauthorized",
+  "message": "Unauthorized",
   "data": {}
 }
 ```
@@ -334,15 +343,15 @@ Based on the user story requirements, the API should return these specific secto
 - PNRI (Philippine Nuclear Research Institute)
 - PTRI (Philippine Textile Research Institute)
 
-### 3. S&T Service Institutes
+### 3. Scientific and Technological Services
 - PAGASA (Philippine Atmospheric, Geophysical and Astronomical Services Administration)
 - PHIVOLCS (Philippine Institute of Volcanology and Seismology)
 - SEI (Science Education Institute)
-- PSHS (Philippine Science High School)
+- Philippine Science High School System
 - STII (Science and Technology Information Institute)
 - TAPI (Technology Application and Promotion Institute)
 
-### 4. Advisory Body
+### 4. Collegial and Scientific Bodies
 - NAST (National Academy of Science and Technology)
 - NRCP (National Research Council of the Philippines)
 
@@ -363,18 +372,18 @@ Based on the user story requirements, the API should return these specific secto
 #### ✅ Data Integrity
 - **Given:** `tblorganizational_units` table is populated
 - **When:** API is called
-- **Then:** Correctly groups agencies under parent categories
+- **Then:** Correctly groups agencies under parent categories using database parent records
 
 ### Common HTTP Status Codes
 
 #### 200 OK
 - Request successful
-- Data returned in required format
+- Data returned in required format (or empty array with message `No agencies found.`)
 
 #### 401 Unauthorized
 - Missing or invalid JWT token
 - Token expired
-- Solution: Get new token from `/api/auth/token`
+- Solution: Get new token from `/api/auth/login`
 
 #### 500 Internal Server Error
 - Database connection issues
@@ -396,16 +405,22 @@ CREATE TABLE tblorganizational_units (
 ### Query Used
 ```sql
 SELECT
-  org_unit_id,
-  org_unit_name,
-  parent_org_unit_id
+  child.org_unit_id,
+  child.org_unit_name,
+  child.parent_org_unit_id,
+  parent.org_unit_name AS sector_name
 FROM
-  tblorganizational_units
+  tblorganizational_units child
+INNER JOIN
+  tblorganizational_units parent ON parent.org_unit_id = child.parent_org_unit_id
 WHERE
-  unit_type_id = 1
+  child.unit_type_id = 1
+  AND child.parent_org_unit_id IN (101, 153, 155, 157)
 ORDER BY
-  parent_org_unit_id, org_unit_name;
+  child.parent_org_unit_id, child.org_unit_name;
 ```
+
+The API derives sector labels from `parent.org_unit_name` instead of hardcoded constants.
 
 ## 🧪 Testing
 
@@ -431,7 +446,8 @@ describe('Agency API - Acceptance Criteria', () => {
       .expect(200);
 
     expect(response.body.status).toBe(200);
-    expect(response.body.data).toHaveLength(4); // 4 sectors
+    expect(response.body.message).toBe('Agency dropdown list retrieved successfully.');
+    expect(Array.isArray(response.body.data)).toBe(true);
     
     // Check Sectoral Planning Councils
     const sectoralCouncils = response.body.data.find(s => s.org_unit_name === "Sectoral Planning Councils");
@@ -481,14 +497,14 @@ describe('Agency API - Acceptance Criteria', () => {
 **Problem:** Agencies not grouped correctly
 **Solution:**
 1. Check `parent_org_unit_id` values in database
-2. Verify `unit_type_id = 1` filter
-3. Review AgencyMapper logic
+2. Verify `unit_type_id = 1` filter and parent IDs `(101, 153, 155, 157)`
+3. Verify parent records exist for those IDs
 
 #### Empty Response
 **Problem:** No agencies returned
 **Solution:**
 1. Check database connection
-2. Verify agency data exists
+2. Verify agency rows exist with `unit_type_id = 1` and `parent_org_unit_id` in `(101, 153, 155, 157)`
 3. Check server logs for errors
 
 ### Debug Steps
@@ -513,7 +529,7 @@ For Agency API issues:
 - [JWT Token Guide](./JWT_TOKEN_GUIDE.md)
 - [API Authentication](./AUTH_GUIDE.md)
 
-**Last Updated:** January 23, 2026  
-**Version:** 1.0.0  
+**Last Updated:** March 23, 2026  
+**Version:** 1.1.0  
 **Backend:** DX Organization Management Backend  
 **Compliance:** ✅ Meets all user story acceptance criteria
