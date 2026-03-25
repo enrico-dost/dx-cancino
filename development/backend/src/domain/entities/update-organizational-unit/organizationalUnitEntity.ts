@@ -20,7 +20,7 @@ export interface UpdateOrganizationalUnitEntity {
   region_id?: number;
   prov_id?: number;
   city_id?: number;
-  brgy_id?: number;
+  barangay_id?: number;
   address?: string;
   latitude?: string;
   longitude?: string;

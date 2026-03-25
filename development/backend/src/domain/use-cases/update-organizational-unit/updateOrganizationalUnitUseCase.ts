@@ -6,7 +6,7 @@ import { TYPES } from '../../../di/types';
 @injectable()
 export class updateOrganizationalUnitUseCase {
   constructor(
-    @inject(TYPES.OrganizationalUnitRepository) private organizationalUnitRepository: OrganizationalUnitRepository
+    @inject(TYPES.UpdateOrganizationalUnitRepository) private organizationalUnitRepository: OrganizationalUnitRepository
   ) {}
 
   async execute(
