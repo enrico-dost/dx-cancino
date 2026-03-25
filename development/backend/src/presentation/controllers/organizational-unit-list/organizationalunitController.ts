@@ -2,7 +2,7 @@ import { injectable, inject } from 'inversify';
 import type { Request, Response } from 'express';
 import { getAllOrganizationalUnitsUseCase } from '../../../domain/use-cases/organizational-unit-list/getOrganizationalUnitUseCase';
 import type { OrganizationalUnitResponseDto } from '../../models/dto/organizational-unit-list/organizationalunitDto';
-import { createSuccessResponse, createErrorResponse } from '../../models/dto/GlobalResponseDto';
+import { createErrorResponse } from '../../models/dto/GlobalResponseDto';
 import { TYPES } from '../../../di/types';
 
 @injectable()
@@ -16,7 +16,15 @@ export class organizationalUnitController {
     try {
       const organizationalUnits = await this.getAllOrganizationalUnitsUseCase.execute();
 
-      const response: OrganizationalUnitResponseDto = createSuccessResponse(organizationalUnits);
+      const message = organizationalUnits.length > 0
+        ? 'Organizational units retrieved successfully.'
+        : 'No organizational units found.';
+
+      const response: OrganizationalUnitResponseDto = {
+        status: 200,
+        message,
+        data: organizationalUnits
+      };
 
       res.status(200).json(response);
     } catch (error) {
