@@ -15,7 +15,7 @@ import { TYPES } from './di/types';
 import { databaseService } from './data/data-sources/DatabaseService';
 
 // Agency API
-import { agencyController } from './presentation/controllers/agency-by-sector/AgencyController';
+import { agencyController } from './presentation/controllers/agency-by-sector/agencyController';
 import { createAgencyRoutes } from './presentation/routes/agency-by-sector/agencyRoutes';
 
 // Organization List API

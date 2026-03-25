@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify';
-import type { AgencyRepository } from '../../repositories/agency-by-sector/AgencyRepository';
-import type { AgencyEntity } from '../../entities/agency-by-sector/AgencyEntity';
+import type { AgencyRepository } from '../../repositories/agency-by-sector/agencyRepository';
+import type { AgencyEntity } from '../../entities/agency-by-sector/agencyEntity';
 import { TYPES } from '../../../di/types';
 
 /**

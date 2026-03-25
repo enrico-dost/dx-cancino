@@ -1,7 +1,7 @@
 import { injectable, inject } from 'inversify';
-import type { AgencyRepository } from '../../../domain/repositories/agency-by-sector/AgencyRepository';
-import type { AgencyEntity } from '../../../domain/entities/agency-by-sector/AgencyEntity';
-import { agencyMapper } from '../../mappers/agency-by-sector/AgencyMapper';
+import type { AgencyRepository } from '../../../domain/repositories/agency-by-sector/agencyRepository';
+import type { AgencyEntity } from '../../../domain/entities/agency-by-sector/agencyEntity';
+import { agencyMapper } from '../../mappers/agency-by-sector/agencyMapper';
 import { databaseService } from '../../data-sources/DatabaseService';
 import { TYPES } from '../../../di/types';
 

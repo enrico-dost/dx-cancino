@@ -1,9 +1,9 @@
 import { injectable, inject } from 'inversify';
 import { Request, Response } from 'express';
-import type { getAgencyBySectorUseCase } from '../../../domain/use-cases/agency-by-sector/GetAgencyBySectorUseCase';
+import type { getAgencyBySectorUseCase } from '../../../domain/use-cases/agency-by-sector/getAgencyBySectorUseCase';
 import { TYPES } from '../../../di/types';
-import type { AgencyBySectorDataDto, AgencySectorDto } from '../../models/dto/agency-by-sector/AgencyDto';
-import type { AgencyEntity } from '../../../domain/entities/agency-by-sector/AgencyEntity';
+import type { AgencyBySectorDataDto, AgencySectorDto } from '../../models/dto/agency-by-sector/agencyDto';
+import type { AgencyEntity } from '../../../domain/entities/agency-by-sector/agencyEntity';
 
 /**
  * Agency Controller

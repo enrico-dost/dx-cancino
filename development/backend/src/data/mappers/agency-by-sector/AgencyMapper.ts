@@ -1,5 +1,5 @@
-import type { AgencyModel } from '../../models/agency-by-sector/AgencyModel';
-import type { AgencyEntity } from '../../../domain/entities/agency-by-sector/AgencyEntity';
+import type { AgencyModel } from '../../models/agency-by-sector/agencyModel';
+import type { AgencyEntity } from '../../../domain/entities/agency-by-sector/agencyEntity';
 
 export class agencyMapper {
   static toEntity(model: AgencyModel): AgencyEntity {
