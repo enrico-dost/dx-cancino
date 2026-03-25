@@ -90,10 +90,10 @@ export class organizationalUnitController {
         });
         return;
       }
-      if (updateData.brgy_id !== undefined && updateData.brgy_id !== null && (typeof updateData.brgy_id !== 'number' || isNaN(updateData.brgy_id))) {
+      if (updateData.barangay_id !== undefined && updateData.barangay_id !== null && (typeof updateData.barangay_id !== 'number' || isNaN(updateData.barangay_id))) {
         res.status(400).json({
           status: 400,
-          message: 'Invalid brgy_id: must be a valid integer',
+          message: 'Invalid barangay_id: must be a valid integer',
           data: {}
         });
         return;
