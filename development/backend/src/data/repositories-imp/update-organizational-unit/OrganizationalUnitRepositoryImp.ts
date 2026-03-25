@@ -95,9 +95,9 @@ export class organizationalUnitRepositoryImp implements OrganizationalUnitReposi
       fields.push(`city_id = $${paramIndex++}`);
       values.push(updateData.city_id);
     }
-    if (updateData.brgy_id !== undefined) {
-      fields.push(`brgy_id = $${paramIndex++}`);
-      values.push(updateData.brgy_id);
+    if (updateData.barangay_id !== undefined) {
+      fields.push(`barangay_id = $${paramIndex++}`);
+      values.push(updateData.barangay_id);
     }
     if (updateData.address !== undefined) {
       fields.push(`address = $${paramIndex++}`);
@@ -124,7 +124,7 @@ export class organizationalUnitRepositoryImp implements OrganizationalUnitReposi
     const query = `
       UPDATE tblorganizational_units
       SET ${fields.join(', ')}
-      WHERE org_unit_id = $${paramIndex}
+      WHERE org_unit_id = $${paramIndex++}
       RETURNING org_unit_id;
     `;
 

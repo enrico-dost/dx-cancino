@@ -10,7 +10,7 @@ export class organizationalUnitController {
   constructor(
     @inject(TYPES.getAllOrganizationalUnitsUseCase)
     private getAllOrganizationalUnitsUseCase: getAllOrganizationalUnitsUseCase
-  ) {}
+  ) { }
 
   async getAllOrganizationalUnits(req: Request, res: Response): Promise<void> {
     try {
@@ -34,15 +34,15 @@ export class organizationalUnitController {
     }
   }
 
-    async createOrganizationalUnit(req: Request, res: Response): Promise<void> {
+  async createOrganizationalUnit(req: Request, res: Response): Promise<void> {
     try {
       const {
         org_unit_id,
         org_unit_name,
         org_unit_descr,
         unit_type_id,
-        parent_org_unit_id, 
-        region_id,          
+        parent_org_unit_id,
+        region_id,
         prov_id,
         city_id,
         barangay_id,
@@ -67,7 +67,20 @@ export class organizationalUnitController {
         res.status(400).json({
           status: 400,
           message: "Validation failed.",
-          errors: validationErrors
+          errors: [
+            {
+              field: "parent_org_unit_id",
+              message: "Parent Organizational Unit does not exist."
+            },
+            {
+              field: "unit_type_id",
+              message: "Invalid unit type ID."
+            },
+            {
+              field: "region_id",
+              message: "Region ID is required and must be valid."
+            }
+          ]
         });
         return;
       }
@@ -77,11 +90,11 @@ export class organizationalUnitController {
         org_unit_name,
         org_unit_descr,
         unit_type_id,
-        parent_org_unit_id, 
-        region_id,          
+        parent_org_unit_id,
+        region_id,
         prov_id,
         city_id,
-        barangay_id,        
+        barangay_id,
         address,
         latitude,
         longitude,
