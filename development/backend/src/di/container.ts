@@ -4,12 +4,12 @@ import { Pool } from 'pg';
 import { TYPES } from './types';
 
 // Database
-import { databaseService } from '../data/data-sources/DatabaseService';
+import { databaseService } from '../data/data-sources/databaseService';
 
 // Agency API
-import { agencyRepositoryImp } from '../data/repositories-imp/agency/AgencyRepositoryImp';
-import { getAgencyBySectorUseCase } from '../domain/use-cases/agency/GetAgencyBySectorUseCase';
-import { agencyController } from '../presentation/controllers/agency/AgencyController';
+import { agencyRepositoryImp } from '../data/repositories-imp/agency-by-sector/agencyRepositoryImp';
+import { getAgencyBySectorUseCase } from '../domain/use-cases/agency-by-sector/getAgencyBySectorUseCase';
+import { agencyController } from '../presentation/controllers/agency-by-sector/agencyController';
 
 // Organization List API
 import { organizationalUnitRepositoryImp as OrgListRepositoryImp } from '../data/repositories-imp/organizational-unit-list/organizationalUnitRepositoryImp';
@@ -19,7 +19,7 @@ import { organizationalUnitController as OrgListController } from '../presentati
 import type { organizationalUnitController } from '../presentation/controllers/organizational-unit-list/organizationalunitController';
 
 // Update Organizational Unit API
-import { organizationalUnitRepositoryImp as UpdateOrgRepositoryImp } from '../data/repositories-imp/update-organizational-unit/OrganizationalUnitRepositoryImp';
+import { organizationalUnitRepositoryImp as UpdateOrgRepositoryImp } from '../data/repositories-imp/update-organizational-unit/organizationalUnitRepositoryImp';
 import { updateOrganizationalUnitUseCase } from '../domain/use-cases/update-organizational-unit/updateOrganizationalUnitUseCase';
 import { organizationalUnitController as UpdateOrgController } from '../presentation/controllers/update-organizational-unit/organizationalUnitController';
 
@@ -40,7 +40,7 @@ import { GetUserOrgUnitAccessByUserUseCase } from "../domain/use-cases/user-org-
 import { UserOrgUnitAccessController } from "../presentation/controllers/user-org-unit-access/userOrgUnitAccessController";
 
 // Auth
-import { authController } from '../presentation/controllers/auth/AuthController';
+import { authController } from '../presentation/controllers/auth/authController';
 
 /**
  * Dependency Injection Container

@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify';
-import type { AgencyRepository } from '../../repositories/agency/AgencyRepository';
-import type { AgencySectorEntity } from '../../entities/agency/AgencyEntity';
+import type { AgencyRepository } from '../../repositories/agency-by-sector/agencyRepository';
+import type { AgencyEntity } from '../../entities/agency-by-sector/agencyEntity';
 import { TYPES } from '../../../di/types';
 
 /**
@@ -15,9 +15,9 @@ export class getAgencyBySectorUseCase {
 
   /**
    * Execute the use case to get agencies by sector
-   * @returns Promise<AgencySectorEntity[]>
+   * @returns Promise<AgencyEntity[]>
    */
-  async execute(): Promise<AgencySectorEntity[]> {
+  async execute(): Promise<AgencyEntity[]> {
     return await this.agencyRepository.getAgenciesBySector();
   }
 }
