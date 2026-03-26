@@ -30,7 +30,7 @@ export const authenticateJWT = (
     if (!authHeader) {
       res.status(401).json({
         status: 401,
-        message: 'Authorization header missing',
+        message: 'Unauthorized',
         data: {}
       });
       return;
@@ -40,7 +40,7 @@ export const authenticateJWT = (
     if (!authHeader.startsWith('Bearer ')) {
       res.status(401).json({
         status: 401,
-        message: 'Invalid authorization format. Expected: Bearer <token>',
+        message: 'Unauthorized',
         data: {}
       });
       return;
@@ -52,7 +52,7 @@ export const authenticateJWT = (
     if (!token) {
       res.status(401).json({
         status: 401,
-        message: 'Token missing',
+        message: 'Unauthorized',
         data: {}
       });
       return;
@@ -79,7 +79,7 @@ export const authenticateJWT = (
     if (error instanceof jwt.TokenExpiredError) {
       res.status(401).json({
         status: 401,
-        message: 'Token expired',
+        message: 'Unauthorized',
         data: {}
       });
       return;
@@ -88,7 +88,7 @@ export const authenticateJWT = (
     if (error instanceof jwt.JsonWebTokenError) {
       res.status(401).json({
         status: 401,
-        message: 'Invalid token',
+        message: 'Unauthorized',
         data: {}
       });
       return;
@@ -97,7 +97,7 @@ export const authenticateJWT = (
     console.error('Error in authenticateJWT middleware:', error);
     res.status(401).json({
       status: 401,
-      message: 'unauthorized',
+      message: 'Unauthorized',
       data: {}
     });
   }
