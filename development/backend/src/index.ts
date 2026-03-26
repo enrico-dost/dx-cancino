@@ -12,7 +12,7 @@ import { container } from './di/container';
 import { TYPES } from './di/types';
 
 // Database
-import { databaseService } from './data/data-sources/DatabaseService';
+import { databaseService } from './data/data-sources/databaseService';
 
 // Agency API
 import { agencyController } from './presentation/controllers/agency-by-sector/agencyController';
@@ -36,7 +36,7 @@ import { createUserOrgUnitAccessRoutes } from "./presentation/routes/user-org-un
 import { UserOrgUnitAccessController } from "./presentation/controllers/user-org-unit-access/userOrgUnitAccessController";
 
 // Auth
-import { authController } from './presentation/controllers/auth/AuthController';
+import { authController } from './presentation/controllers/auth/authController';
 import { createAuthRoutes } from './presentation/routes/auth/authRoutes';
 
 // Response Models

@@ -4,7 +4,7 @@ import { Pool } from 'pg';
 import { TYPES } from './types';
 
 // Database
-import { databaseService } from '../data/data-sources/DatabaseService';
+import { databaseService } from '../data/data-sources/databaseService';
 
 // Agency API
 import { agencyRepositoryImp } from '../data/repositories-imp/agency-by-sector/agencyRepositoryImp';
@@ -40,7 +40,7 @@ import { GetUserOrgUnitAccessByUserUseCase } from "../domain/use-cases/user-org-
 import { UserOrgUnitAccessController } from "../presentation/controllers/user-org-unit-access/userOrgUnitAccessController";
 
 // Auth
-import { authController } from '../presentation/controllers/auth/AuthController';
+import { authController } from '../presentation/controllers/auth/authController';
 
 /**
  * Dependency Injection Container
