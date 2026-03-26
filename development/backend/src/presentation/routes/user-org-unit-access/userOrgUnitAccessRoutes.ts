@@ -9,7 +9,7 @@ export function createUserOrgUnitAccessRoutes(controller: UserOrgUnitAccessContr
     controller.upsert(req, res)
   );
 
-  router.get("/user-org-unit-access/:user_id", authenticateJWT, (req, res) =>
+  router.get("/user-org-unit-access", authenticateJWT, (req, res) =>
     controller.getByUser(req, res)
   );
 
