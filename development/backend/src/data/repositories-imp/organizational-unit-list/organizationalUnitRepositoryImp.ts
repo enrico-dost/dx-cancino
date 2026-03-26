@@ -28,7 +28,7 @@ export class organizationalUnitRepositoryImp implements OrganizationalUnitReposi
           ou.org_unit_id,
           ou.org_unit_name,
           ou.address,
-          ou.brgy_id,
+          ou.barangay_id,
           ou.city_id,
           ou.prov_id,
           ou.region_id,

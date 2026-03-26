@@ -10,6 +10,4 @@ export interface AgencySectorDto {
   agencies: AgencyDto[];
 }
 
-export interface AgencyBySectorResponseDto {
-  data: AgencySectorDto[];
-}
+export type AgencyBySectorDataDto = AgencySectorDto[];

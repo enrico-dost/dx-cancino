@@ -7,9 +7,9 @@ import { TYPES } from './types';
 import { databaseService } from '../data/data-sources/databaseService';
 
 // Agency API
-import { agencyRepositoryImp } from '../data/repositories-imp/agency/agencyRepositoryImp';
-import { getAgencyBySectorUseCase } from '../domain/use-cases/agency/getAgencyBySectorUseCase';
-import { agencyController } from '../presentation/controllers/agency/agencyController';
+import { agencyRepositoryImp } from '../data/repositories-imp/agency-by-sector/agencyRepositoryImp';
+import { getAgencyBySectorUseCase } from '../domain/use-cases/agency-by-sector/getAgencyBySectorUseCase';
+import { agencyController } from '../presentation/controllers/agency-by-sector/agencyController';
 
 // Organization List API
 import { organizationalUnitRepositoryImp as OrgListRepositoryImp } from '../data/repositories-imp/organizational-unit-list/organizationalUnitRepositoryImp';
