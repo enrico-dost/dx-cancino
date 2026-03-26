@@ -12,10 +12,10 @@ import { container } from './di/container';
 import { TYPES } from './di/types';
 
 // Database
-import { databaseService } from './data/data-sources/databaseService';
+import { databaseService } from './data/data-sources/DatabaseService';
 
 // Agency API
-import { agencyController } from './presentation/controllers/agency/agencyController';
+import { agencyController } from './presentation/controllers/agency/AgencyController';
 import { createAgencyRoutes } from './presentation/routes/agency/agencyRoutes';
 
 // Organization List API
@@ -36,7 +36,7 @@ import { createUserOrgUnitAccessRoutes } from "./presentation/routes/user-org-un
 import { UserOrgUnitAccessController } from "./presentation/controllers/user-org-unit-access/userOrgUnitAccessController";
 
 // Auth
-import { authController } from './presentation/controllers/auth/authController';
+import { authController } from './presentation/controllers/auth/AuthController';
 import { createAuthRoutes } from './presentation/routes/auth/authRoutes';
 
 // Response Models
@@ -163,17 +163,20 @@ const initializeDatabase = async (): Promise<void> => {
 const registerRoutes = (): void => {
   // Main API route - Lists all available endpoints
   app.get('/api', (req, res) => {
-    const response = createSuccessResponse(
-      {
-        version: '1.0.0',
-        endpoints: {
-          auth: '/api/auth',
-          agencies: '/api/agencies',
-          organizationalUnits: '/api/organizational-units'
+    res.json(createSuccessResponse({
+      version: '1.0.0',
+      endpoints: {
+        auth: '/api/auth',
+        agencies: '/api/agencies',
+        organizationalUnits: '/api/organizational-units',
+
+        userOrgUnitAccess: {
+          grant: 'POST /api/user-access',
+          upsert: 'PUT /api/user-org-unit-access',
+          get: 'GET /api/user-org-unit-access?user_id=123'
         }
       }
-    );
-    res.json(response);
+    }));
   });
 
   // ============================================
@@ -246,5 +249,22 @@ if (process.env.NODE_ENV !== 'test') {
 
   startServer();
 }
+
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  // Handle invalid JSON (body-parser error)
+  if (err instanceof SyntaxError && 'body' in err) {
+    return res.status(400).json({
+      error: "Invalid request.",
+      message: "Invalid JSON format."
+    });
+  }
+
+  console.error("Unhandled Error:", err);
+
+  return res.status(500).json({
+    error: "Internal server error",
+    message: "Something went wrong"
+  });
+});
 
 export { app, initializeRoutes };
