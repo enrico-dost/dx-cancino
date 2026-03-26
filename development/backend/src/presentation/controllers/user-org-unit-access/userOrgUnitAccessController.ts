@@ -99,10 +99,14 @@ export class UserOrgUnitAccessController {
 
       const result = await this.getUseCase.execute(user_id);
 
-      const response: UserOrgUnitAccessResponseDto =
-        createSuccessResponse(result, 200);
-
-      res.status(200).json(response);
+      res.status(200).json({
+        user_id,
+        permissions: result.map(item => ({
+          org_unit_id: item.org_unit_id,
+          perm_id: item.perm_id,
+          is_active: item.is_active
+        }))
+      });
 
     } catch (error) {
       console.error("Error in UserOrgUnitAccessController.getByUser:", error);
