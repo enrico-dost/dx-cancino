@@ -17,6 +17,12 @@ export class UnitTypeController {
       const unitTypes = await this.getAllUnitTypesUseCase.execute();
 
       const response: UnitTypeResponseDto = createSuccessResponse(unitTypes);
+      
+      if (!unitTypes || unitTypes.length === 0) {
+        response.message = "No unit types found.";
+      } else {
+        response.message = "Unit types retrieved successfully.";
+      }
 
       res.status(200).json(response);
     } catch (error) {
