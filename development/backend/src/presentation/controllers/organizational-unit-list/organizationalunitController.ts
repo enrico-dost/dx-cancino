@@ -2,7 +2,7 @@ import { injectable, inject } from 'inversify';
 import type { Request, Response } from 'express';
 import { getAllOrganizationalUnitsUseCase } from '../../../domain/use-cases/organizational-unit-list/getOrganizationalUnitUseCase';
 import type { OrganizationalUnitResponseDto } from '../../models/dto/organizational-unit-list/organizationalunitDto';
-import { createSuccessResponse, createErrorResponse } from '../../models/dto/GlobalResponseDto';
+import { createErrorResponse } from '../../models/dto/GlobalResponseDto';
 import { TYPES } from '../../../di/types';
 
 @injectable()
@@ -10,13 +10,21 @@ export class organizationalUnitController {
   constructor(
     @inject(TYPES.getAllOrganizationalUnitsUseCase)
     private getAllOrganizationalUnitsUseCase: getAllOrganizationalUnitsUseCase
-  ) {}
+  ) { }
 
   async getAllOrganizationalUnits(req: Request, res: Response): Promise<void> {
     try {
       const organizationalUnits = await this.getAllOrganizationalUnitsUseCase.execute();
 
-      const response: OrganizationalUnitResponseDto = createSuccessResponse(organizationalUnits);
+      const message = organizationalUnits.length > 0
+        ? 'Organizational units retrieved successfully.'
+        : 'No organizational units found.';
+
+      const response: OrganizationalUnitResponseDto = {
+        status: 200,
+        message,
+        data: organizationalUnits
+      };
 
       res.status(200).json(response);
     } catch (error) {
@@ -26,15 +34,15 @@ export class organizationalUnitController {
     }
   }
 
-    async createOrganizationalUnit(req: Request, res: Response): Promise<void> {
+  async createOrganizationalUnit(req: Request, res: Response): Promise<void> {
     try {
       const {
         org_unit_id,
         org_unit_name,
         org_unit_descr,
         unit_type_id,
-        parent_org_unit_id, 
-        region_id,          
+        parent_org_unit_id,
+        region_id,
         prov_id,
         city_id,
         barangay_id,
@@ -59,7 +67,20 @@ export class organizationalUnitController {
         res.status(400).json({
           status: 400,
           message: "Validation failed.",
-          errors: validationErrors
+          errors: [
+            {
+              field: "parent_org_unit_id",
+              message: "Parent Organizational Unit does not exist."
+            },
+            {
+              field: "unit_type_id",
+              message: "Invalid unit type ID."
+            },
+            {
+              field: "region_id",
+              message: "Region ID is required and must be valid."
+            }
+          ]
         });
         return;
       }
@@ -69,11 +90,11 @@ export class organizationalUnitController {
         org_unit_name,
         org_unit_descr,
         unit_type_id,
-        parent_org_unit_id, 
-        region_id,          
+        parent_org_unit_id,
+        region_id,
         prov_id,
         city_id,
-        barangay_id,        
+        barangay_id,
         address,
         latitude,
         longitude,
