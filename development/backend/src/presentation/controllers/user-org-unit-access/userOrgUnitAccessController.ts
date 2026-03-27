@@ -22,30 +22,43 @@ export class UserOrgUnitAccessController {
     try {
       const { user_id, org_unit_id, perm_id, is_active } = req.body;
 
-      if (user_id == null) {
-        res.status(400).json(createErrorResponse("user_id is required", 400));
+      // Validate required fields and numeric type
+      if (user_id == null || isNaN(Number(user_id))) {
+        res.status(400).json({
+          error: "Invalid request.",
+          message: "User not found or invalid org_unit_id provided."
+        });
         return;
       }
 
-      if (org_unit_id == null) {
-        res.status(400).json(createErrorResponse("org_unit_id is required", 400));
+      if (org_unit_id == null || isNaN(Number(org_unit_id))) {
+        res.status(400).json({
+          error: "Invalid request.",
+          message: "User not found or invalid org_unit_id provided."
+        });
         return;
       }
 
-      if (perm_id == null) {
-        res.status(400).json(createErrorResponse("perm_id is required", 400));
+      if (perm_id == null || isNaN(Number(perm_id))) {
+        res.status(400).json({
+          error: "Invalid request.",
+          message: "User not found or invalid org_unit_id provided."
+        });
         return;
       }
 
       if (typeof is_active !== "boolean") {
-        res.status(400).json(createErrorResponse("is_active must be boolean", 400));
+        res.status(400).json({
+          error: "Invalid request.",
+          message: "is_active must be boolean."
+        });
         return;
       }
 
       const { entity, created } = await this.upsertUseCase.execute({
-        user_id,
-        org_unit_id,
-        perm_id,
+        user_id: Number(user_id),
+        org_unit_id: Number(org_unit_id),
+        perm_id: Number(perm_id),
         is_active
       });
 
@@ -68,9 +81,8 @@ export class UserOrgUnitAccessController {
 
     } catch (error: any) {
       res.status(400).json({
-        status: 400,
-        message: error.message || "Invalid request.",
-        data: {}
+        error: "Invalid request.",
+        message: error.message || "User not found or invalid org_unit_id provided.",
       });
       return;
     }
@@ -81,10 +93,14 @@ export class UserOrgUnitAccessController {
   // ==========================
   async getByUser(req: Request, res: Response): Promise<void> {
     try {
-      const user_id = Number(req.params.user_id) || Number(req.query.user_id);
+      // Accept either query param or URL param
+      const user_id = Number(req.query.user_id) || Number(req.params.user_id);
 
       if (!user_id || isNaN(user_id)) {
-        res.status(400).json(createErrorResponse("Invalid user_id", 400));
+        res.status(400).json({
+          error: "Invalid request.",
+          message: "User not found or invalid org_unit_id provided."
+        });
         return;
       }
 
@@ -120,25 +136,35 @@ export class UserOrgUnitAccessController {
     try {
       const { user_id, org_unit_id, perm_id } = req.body;
 
-      if (user_id == null) {
-        res.status(400).json(createErrorResponse("user_id is required", 400));
+      // Validate required fields and numeric type
+      if (user_id == null || isNaN(Number(user_id))) {
+        res.status(400).json({
+          error: "Invalid request.",
+          message: "User not found or invalid org_unit_id provided."
+        });
         return;
       }
 
-      if (org_unit_id == null) {
-        res.status(400).json(createErrorResponse("org_unit_id is required", 400));
+      if (org_unit_id == null || isNaN(Number(org_unit_id))) {
+        res.status(400).json({
+          error: "Invalid request.",
+          message: "User not found or invalid org_unit_id provided."
+        });
         return;
       }
 
-      if (perm_id == null) {
-        res.status(400).json(createErrorResponse("perm_id is required", 400));
+      if (perm_id == null || isNaN(Number(perm_id))) {
+        res.status(400).json({
+          error: "Invalid request.",
+          message: "User not found or invalid org_unit_id provided."
+        });
         return;
       }
 
       const { entity, created } = await this.upsertUseCase.execute({
-        user_id,
-        org_unit_id,
-        perm_id,
+        user_id: Number(user_id),
+        org_unit_id: Number(org_unit_id),
+        perm_id: Number(perm_id),
         is_active: true
       });
 
@@ -159,9 +185,8 @@ export class UserOrgUnitAccessController {
 
     } catch (error: any) {
       res.status(400).json({
-        status: 400,
-        message: error.message || "Invalid request.",
-        data: {}
+        error: "Invalid request.",
+        message: error.message || "User not found or invalid org_unit_id provided.",
       });
       return;
     }
