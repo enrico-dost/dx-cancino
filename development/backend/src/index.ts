@@ -254,8 +254,9 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   // Handle invalid JSON (body-parser error)
   if (err instanceof SyntaxError && 'body' in err) {
     return res.status(400).json({
-      error: "Invalid request.",
-      message: "Invalid JSON format."
+      status: 400,
+      message: "Invalid JSON format.",
+      data: {}
     });
   }
 
