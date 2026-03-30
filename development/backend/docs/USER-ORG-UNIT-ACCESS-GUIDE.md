@@ -42,119 +42,54 @@ As an admin, I want to manage user access to organizational units so that I can 
 
 ---
 
-# REQUEST EXAMPLES
+## REQUEST EXAMPLES
 
-## Grant Access
-POST /api/user-access
-```json
-{
-  "user_id": 2,
-  "org_unit_id": 101,
-  "perm_id": 457
+### Grant
+
+{ "user_id": 2, "org_unit_id": 101, "perm_id": 457 }
+
+### Activate
+
+{ "user_id": 2, "org_unit_id": 101, "perm_id": 457, "is_active": true }
+
+### Deactivate
+
+{ "user_id": 2, "org_unit_id": 101, "perm_id": 457, "is_active": false }
+
+------------------------------------------------------------------------
+
+## SUCCESS RESPONSE FORMAT (STANDARDIZED)
+
+{ "status": 201, "message": "success", "data": { "user_access_id": 27,
+"user_id": 2, "org_unit_id": 101, "perm_id": 457, "is_active": true,
+"created_at": "timestamp", "updated_at": "timestamp", "created": true }
 }
-```
 
-## Activate Access
-PUT /api/user-org-unit-access
-```json
-{
-  "user_id": 2,
-  "org_unit_id": 101,
-  "perm_id": 457,
-  "is_active": true
-}
-```
+------------------------------------------------------------------------
 
-## Deactivate Access
-PUT /api/user-org-unit-access
-```json
-{
-  "user_id": 2,
-  "org_unit_id": 101,
-  "perm_id": 457,
-  "is_active": false
-}
-```
+## GET RESPONSE
 
-## Get User Access
-GET /api/user-org-unit-access?user_id=2
+{ "status": 200, "message": "success", "data": \[ { "user_access_id":
+16, "user_id": 2, "org_unit_id": 103, "perm_id": 1, "is_active": false,
+"created_at": "timestamp", "updated_at": "timestamp" } \] }
 
----
+------------------------------------------------------------------------
 
-# RESPONSES
+## ERROR HANDLING
 
-## SUCCESS (201 / 200 OK)
+### Invalid JSON
 
-```json
-{
-  "message": "User-org-unit access granted successfully.",
-  "user_id": 2,
-  "org_unit_id": 101,
-  "perm_id": 457,
-  "is_active": true,
-  "last_modified": "2026-03-26T10:00:00Z"
-}
-```
+{ "error": "Invalid request.", "message": "Invalid JSON format." }
 
----
+### Missing Field
 
-## RE-ACTIVATE
+{ "status": 400, "message": "org_unit_id is required", "data": {} }
 
-```json
-{
-  "message": "User-org-unit access re-activated successfully.",
-  "user_id": 2,
-  "org_unit_id": 101,
-  "perm_id": 457,
-  "is_active": true,
-  "last_modified": "2026-03-26T10:00:00Z"
-}
-```
+### Invalid user_id
 
----
+{ "status": 400, "message": "Invalid user_id", "data": {} }
 
-## DEACTIVATE
-
-```json
-{
-  "message": "User-org-unit access deactivated successfully.",
-  "user_id": 2,
-  "org_unit_id": 101,
-  "perm_id": 457,
-  "is_active": false,
-  "last_modified": "2026-03-26T10:00:00Z"
-}
-```
-
----
-
-## GET USER PERMISSIONS
-
-```json
-{
-  "user_id": 2,
-  "permissions": [
-    {
-      "org_unit_id": 101,
-      "perm_id": 457,
-      "is_active": true
-    }
-  ]
-}
-```
-
----
-
-## INVALID JSON (400 BAD REQUEST)
-
-```json
-{
-  "error": "Invalid request.",
-  "message": "Invalid JSON format."
-}
-```
-
----
+------------------------------------------------------------------------
 
 ## MISSING FIELD (400 BAD REQUEST)
 

@@ -250,21 +250,4 @@ if (process.env.NODE_ENV !== 'test') {
   startServer();
 }
 
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  // Handle invalid JSON (body-parser error)
-  if (err instanceof SyntaxError && 'body' in err) {
-    return res.status(400).json({
-      error: "Invalid request.",
-      message: "Invalid JSON format."
-    });
-  }
-
-  console.error("Unhandled Error:", err);
-
-  return res.status(500).json({
-    error: "Internal server error",
-    message: "Something went wrong"
-  });
-});
-
 export { app, initializeRoutes };
