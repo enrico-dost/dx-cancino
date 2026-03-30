@@ -220,8 +220,7 @@ describe('Update Organizational Unit API - Unit Tests', () => {
       if (!hasValidAuthHeader) {
         const response = {
           status: 401,
-          message: 'unauthorized',
-          data: {}
+          message: 'Unauthorized'
         };
         
         expect(response.status).toBe(401);
@@ -244,8 +243,7 @@ describe('Update Organizational Unit API - Unit Tests', () => {
       if (!result) {
         const response = {
           status: 401,
-          message: 'unauthorized',
-          data: {}
+          message: 'Unauthorized'
         };
         
         expect(response.status).toBe(401);
