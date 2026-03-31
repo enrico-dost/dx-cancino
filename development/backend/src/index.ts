@@ -35,6 +35,10 @@ import { createUnitTypeRoutes } from './presentation/routes/unit-type/unitTypeRo
 import { createUserOrgUnitAccessRoutes } from "./presentation/routes/user-org-unit-access/userOrgUnitAccessRoutes";
 import { UserOrgUnitAccessController } from "./presentation/controllers/user-org-unit-access/userOrgUnitAccessController";
 
+// Implementing Agency API
+import { implementingAgencyController } from './presentation/controllers/implementing-agency/implementingAgencyController';
+import { createImplementingAgencyRoutes } from './presentation/routes/implementing-agency/implementingAgencyRoutes';
+
 // Auth
 import { authController } from './presentation/controllers/auth/authController';
 import { createAuthRoutes } from './presentation/routes/auth/authRoutes';
@@ -215,6 +219,12 @@ const registerRoutes = (): void => {
   // ============================================
   const userAccessController = container.get<UserOrgUnitAccessController>(TYPES.UserOrgUnitAccessController);
   app.use("/api", createUserOrgUnitAccessRoutes(userAccessController));
+
+  // ============================================
+  // Implementing Agency API Routes
+  // ============================================
+  const implAgencyController = container.get<implementingAgencyController>(TYPES.implementingAgencyController);
+  app.use('/api/implementing-agency', createImplementingAgencyRoutes(implAgencyController));
 
 };
 
