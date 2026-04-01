@@ -6,10 +6,11 @@ export interface UpdateOrganizationalUnitRequestDto {
   region_id?: number;
   prov_id?: number;
   city_id?: number;
-  brgy_id?: number;
+  barangay_id?: number;
   address?: string;
-  latitude?: string;
-  longitude?: string;
+  latitude?: number | string;
+  longitude?: number | string;
+  longitutde?: number | string;
 }
 
 export interface OrganizationalUnitResponseDto {

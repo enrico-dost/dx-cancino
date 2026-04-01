@@ -30,8 +30,7 @@ export const authenticateJWT = (
     if (!authHeader) {
       res.status(401).json({
         status: 401,
-        message: 'Unauthorized',
-        data: {}
+        message: 'Unauthorized'
       });
       return;
     }
@@ -40,8 +39,7 @@ export const authenticateJWT = (
     if (!authHeader.startsWith('Bearer ')) {
       res.status(401).json({
         status: 401,
-        message: 'Unauthorized',
-        data: {}
+        message: 'Unauthorized'
       });
       return;
     }
@@ -52,15 +50,14 @@ export const authenticateJWT = (
     if (!token) {
       res.status(401).json({
         status: 401,
-        message: 'Unauthorized',
-        data: {}
+        message: 'Unauthorized'
       });
       return;
     }
 
     // Verify the token
     const jwtSecret = process.env.JWT_SECRET;
-    
+
     if (!jwtSecret) {
       console.error('JWT_SECRET is not set in environment variables');
       res.status(500).json({
@@ -79,8 +76,7 @@ export const authenticateJWT = (
     if (error instanceof jwt.TokenExpiredError) {
       res.status(401).json({
         status: 401,
-        message: 'Unauthorized',
-        data: {}
+        message: 'Unauthorized'
       });
       return;
     }
@@ -88,8 +84,7 @@ export const authenticateJWT = (
     if (error instanceof jwt.JsonWebTokenError) {
       res.status(401).json({
         status: 401,
-        message: 'Unauthorized',
-        data: {}
+        message: 'Unauthorized'
       });
       return;
     }
@@ -97,8 +92,7 @@ export const authenticateJWT = (
     console.error('Error in authenticateJWT middleware:', error);
     res.status(401).json({
       status: 401,
-      message: 'Unauthorized',
-      data: {}
+      message: 'Unauthorized'
     });
   }
 };
@@ -146,7 +140,7 @@ export const getUnitTypeJWT = (
 
     // Verify the token
     const jwtSecret = process.env.JWT_SECRET;
-    
+
     if (!jwtSecret) {
       console.error('JWT_SECRET is not set in environment variables');
       res.status(500).json({
@@ -165,8 +159,7 @@ export const getUnitTypeJWT = (
     if (error instanceof jwt.TokenExpiredError) {
       res.status(401).json({
         status: 401,
-        message: 'Token expired',
-        data: {}
+        message: 'Unauthorized'
       });
       return;
     }
@@ -174,8 +167,7 @@ export const getUnitTypeJWT = (
     if (error instanceof jwt.JsonWebTokenError) {
       res.status(401).json({
         status: 401,
-        message: 'Unauthorized',
-        data: {}
+        message: 'Unauthorized'
       });
       return;
     }
@@ -183,9 +175,7 @@ export const getUnitTypeJWT = (
     console.error('Error in authenticateJWT middleware:', error);
     res.status(401).json({
       status: 401,
-      message: 'Unauthorized',
-      data: {}
+      message: 'Unauthorized'
     });
   }
 };
-
