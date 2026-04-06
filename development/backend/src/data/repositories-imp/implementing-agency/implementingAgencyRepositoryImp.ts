@@ -25,7 +25,7 @@ export class implementingAgencyRepositoryImp implements ImplementingAgencyReposi
             // Query per PBI specification:
             // - Only units where unit_type_id matches the filter
             // - Parent org unit ID is not null
-            // - Results ordered by org_unit_name (name, not ID)
+            // - Results ordered by org_unit_name alphabetically (case-insensitive)
             const query = `
             SELECT
                 org_unit_id,
@@ -36,7 +36,7 @@ export class implementingAgencyRepositoryImp implements ImplementingAgencyReposi
                 unit_type_id = ANY($1::int[])
                 AND parent_org_unit_id IS NOT NULL
             ORDER BY
-                org_unit_id;
+                org_unit_Id;
             `;
 
             // Pass unitTypeIds as array parameter for PostgreSQL ANY() function
