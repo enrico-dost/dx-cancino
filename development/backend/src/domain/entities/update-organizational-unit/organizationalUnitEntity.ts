@@ -22,6 +22,6 @@ export interface UpdateOrganizationalUnitEntity {
   city_id?: number;
   barangay_id?: number;
   address?: string;
-  latitude?: string;
-  longitude?: string;
+  latitude?: number | string;
+  longitude?: number | string;
 }

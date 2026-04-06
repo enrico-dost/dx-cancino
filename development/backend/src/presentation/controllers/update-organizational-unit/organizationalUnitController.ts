@@ -27,6 +27,10 @@ export class organizationalUnitController {
       }
 
       const updateData: UpdateOrganizationalUnitRequestDto = req.body;
+      // Backward-compatible alias for misspelled longitude key from clients.
+      if (updateData.longitude === undefined && updateData.longitutde !== undefined) {
+        updateData.longitude = updateData.longitutde;
+      }
       
       // Validate that at least one field is provided for update
       if (Object.keys(updateData).length === 0) {
@@ -43,11 +47,11 @@ export class organizationalUnitController {
       if (!userId) {
         res.status(401).json({
           status: 401,
-          message: 'unauthorized',
-          data: {}
+          message: 'Unauthorized'
         });
         return;
       }
+      const userIdAsString = String(userId);
 
       // Validate numeric fields if provided
       if (updateData.unit_type_id !== undefined && (typeof updateData.unit_type_id !== 'number' || isNaN(updateData.unit_type_id))) {
@@ -98,11 +102,35 @@ export class organizationalUnitController {
         });
         return;
       }
+      if (updateData.latitude !== undefined && updateData.latitude !== null) {
+        const latitude = typeof updateData.latitude === 'number' ? updateData.latitude : Number(updateData.latitude);
+        if (Number.isNaN(latitude) || latitude < -90 || latitude > 90) {
+          res.status(400).json({
+            status: 400,
+            message: 'Invalid latitude: must be a valid number between -90 and 90',
+            data: {}
+          });
+          return;
+        }
+        updateData.latitude = latitude;
+      }
+      if (updateData.longitude !== undefined && updateData.longitude !== null) {
+        const longitude = typeof updateData.longitude === 'number' ? updateData.longitude : Number(updateData.longitude);
+        if (Number.isNaN(longitude) || longitude < -180 || longitude > 180) {
+          res.status(400).json({
+            status: 400,
+            message: 'Invalid longitude: must be a valid number between -180 and 180',
+            data: {}
+          });
+          return;
+        }
+        updateData.longitude = longitude;
+      }
 
       const updatedUnit = await this.updateOrganizationalUnitUseCase.execute(
         orgUnitId,
         updateData,
-        userId
+        userIdAsString
       );
 
       if (!updatedUnit) {
