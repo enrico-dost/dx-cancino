@@ -148,7 +148,7 @@ describe('Implementing Agency List API - GET /api/implementing-agency/unit-type'
 
             expect(response.body.status).toBe(200);
             expect(response.body.message).toBe('No implementing agencies found.');
-            expect(response.body.data).toEqual([]);
+            expect(response.body.data).toEqual({});
         });
     });
 
