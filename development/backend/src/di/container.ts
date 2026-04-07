@@ -39,6 +39,11 @@ import { UpsertUserOrgUnitAccessUseCase } from "../domain/use-cases/user-org-uni
 import { GetUserOrgUnitAccessByUserUseCase } from "../domain/use-cases/user-org-unit-access/getUserOrgUnitAccessByUserUseCase";
 import { UserOrgUnitAccessController } from "../presentation/controllers/user-org-unit-access/userOrgUnitAccessController";
 
+// Implementing Agency API
+import { implementingAgencyRepositoryImp } from '../data/repositories-imp/implementing-agency/implementingAgencyRepositoryImp';
+import { getImplementingAgenciesByUnitTypeUseCase } from '../domain/use-cases/implementing-agency/getImplementingAgenciesByUnitTypeUseCase';
+import { implementingAgencyController } from '../presentation/controllers/implementing-agency/implementingAgencyController';
+
 // Auth
 import { authController } from '../presentation/controllers/auth/authController';
 
@@ -129,6 +134,21 @@ container.bind(TYPES.UserOrgUnitAccessController).to(UserOrgUnitAccessController
 // ============================================
 container.bind<EditUnitTypeUseCase>(TYPES.EditUnitTypeUseCase).to(EditUnitTypeUseCase);
 container.bind<EditUnitTypeController>(TYPES.EditUnitTypeController).to(EditUnitTypeController);
+
+// ============================================
+// Implementing Agency API Module
+// ============================================
+container.bind(TYPES.ImplementingAgencyRepository)
+  .to(implementingAgencyRepositoryImp)
+  .inSingletonScope();
+
+container.bind(TYPES.getImplementingAgenciesByUnitTypeUseCase)
+  .to(getImplementingAgenciesByUnitTypeUseCase)
+  .inSingletonScope();
+
+container.bind(TYPES.implementingAgencyController)
+  .to(implementingAgencyController)
+  .inSingletonScope();
 
 // ============================================
 // Auth Module - Shared across all APIs

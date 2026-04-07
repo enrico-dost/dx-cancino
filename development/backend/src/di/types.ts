@@ -37,6 +37,11 @@ export const TYPES = {
   // Edit Unit Type API
   EditUnitTypeUseCase: Symbol.for("EditUnitTypeUseCase"),
   EditUnitTypeController: Symbol.for("EditUnitTypeController"),
+
+  // Implementing Agency API
+  ImplementingAgencyRepository: Symbol.for("ImplementingAgencyRepository"),
+  getImplementingAgenciesByUnitTypeUseCase: Symbol.for("getImplementingAgenciesByUnitTypeUseCase"),
+  implementingAgencyController: Symbol.for("implementingAgencyController"),
   
   // Auth
   authController: Symbol.for('authController'),
